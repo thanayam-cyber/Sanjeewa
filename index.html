@@ -725,7 +725,7 @@ Whether you are an experienced angler or trying fishing for the first time, our 
       <p>Tell us about your visit, then complete secure checkout — our reservations team will confirm your excursions within 24 hours.</p>
     </div>
 
-    <form class="booking-grid" id="bookingForm" novalidate>
+    <form class="booking-grid" id="bookingForm" action="https://formspree.io/f/mgaewrpe" method="POST">
       <div class="booking-form">
         <h3>Booking Details</h3>
         <p class="sub">Fields marked are required to hold your dates.</p>
@@ -739,7 +739,16 @@ Whether you are an experienced angler or trying fishing for the first time, our 
           <label for="email">Email Address</label>
           <input type="email" id="email" name="email" placeholder="you@example.com" required>
         </div>
-
+<div class="field">
+  <label for="phone">WhatsApp / Phone Number</label>
+  <input
+    type="tel"
+    id="phone"
+    name="phone"
+    placeholder="+94 76 011 5090"
+    required
+  >
+</div>
         <div class="row2">
           <div class="field">
             <label for="checkin">Check-In Date</label>
@@ -778,44 +787,37 @@ Whether you are an experienced angler or trying fishing for the first time, our 
       </div>
 
       <div class="payment-panel">
-        <h3>Secure Payment</h3>
-        <p class="sub">Placeholder checkout — no live payment is processed by this layout.</p>
+  <h3>Reservation Inquiry</h3>
 
-        <div class="card-visual" aria-hidden="true">
-          <div class="chip"></div>
-          <div class="num">•••• •••• •••• ••••</div>
-          <div class="meta"><span>Card Holder</span><span>Expires</span></div>
-        </div>
+  <p class="sub">
+    Submit your stay details and our reservations team will contact you within 24 hours to confirm availability.
+  </p>
 
-        <div class="field">
-          <label for="cardName">Cardholder Name</label>
-          <input type="text" id="cardName" name="cardName" placeholder="Name on card">
-        </div>
-        <div class="field">
-          <label for="cardNumber">Card Number</label>
-          <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456">
-        </div>
-        <div class="row2">
-          <div class="field">
-            <label for="cardExp">Expiration Date</label>
-            <input type="text" id="cardExp" name="cardExp" placeholder="MM / YY" maxlength="7">
-          </div>
-          <div class="field">
-            <label for="cardCvv">CVV</label>
-            <input type="text" id="cardCvv" name="cardCvv" inputmode="numeric" maxlength="4" placeholder="•••">
-          </div>
-        </div>
+  <div class="summary">
+    <div class="summary-row">
+      <span>Reception</span>
+      <span>+94 76 011 5090</span>
+    </div>
 
-        <div class="summary">
-          <div class="summary-row"><span>Accommodation, placeholder</span><span>$ —</span></div>
-          <div class="summary-row"><span>Selected experiences</span><span>$ —</span></div>
-          <div class="summary-row"><span>Taxes &amp; service</span><span>$ —</span></div>
-          <div class="summary-row total"><span>Total Due</span><span>$ —</span></div>
-        </div>
+    <div class="summary-row">
+      <span>WhatsApp</span>
+      <span>+94 76 011 5090</span>
+    </div>
 
-        <button type="submit" class="btn btn-gold pay-btn">Authorize Secure Payment</button>
-        <div class="secure-note">Encrypted checkout &nbsp;•&nbsp; Cancellation terms apply</div>
-      </div>
+    <div class="summary-row total">
+      <span>Wild Hasthi Luxury Retreat</span>
+      <span>♥</span>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-gold pay-btn">
+    Send Booking Inquiry
+  </button>
+
+  <div class="secure-note">
+    Your inquiry is sent securely to our reservations team.
+  </div>
+</div>
     </form>
   </div>
 </section>
@@ -910,15 +912,7 @@ Whether you are an experienced angler or trying fishing for the first time, our 
     e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
   });
 
-  // Mock checkout submit (no real payment processed)
-  document.getElementById('bookingForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = e.target.querySelector('.pay-btn');
-    const original = btn.textContent;
-    btn.textContent = 'Request Received';
-    btn.disabled = true;
-    setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2600);
-  });
+  
 </script>
 </body>
 </html>
