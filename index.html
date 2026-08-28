@@ -1186,6 +1186,52 @@
   });
 
   
+<script>
+document.getElementById("whatsappBooking").addEventListener("click", function (event) {
+  event.preventDefault();
+
+  const name = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const checkin = document.getElementById("checkin").value;
+  const checkout = document.getElementById("checkout").value;
+  const guests = document.getElementById("guests").value;
+  const message = document.getElementById("message").value.trim();
+
+  if (!name || !email || !phone || !checkin || !checkout || !guests) {
+    alert("Please complete your name, email, WhatsApp/phone number, check-in date, check-out date and number of guests first.");
+    return;
+  }
+
+  const whatsappMessage =
+`Hello Wild Hasthi,
+
+I would like to make a booking inquiry.
+
+Guest Name: ${name}
+Email: ${email}
+WhatsApp / Phone: ${phone}
+
+Check-In: ${checkin}
+Check-Out: ${checkout}
+Guests: ${guests}
+
+Accommodation: 1 Private Luxury Cabin
+Rate: USD 330 per night
+Game Drive: Included
+
+Special Requests:
+${message || "None"}
+
+Thank you.
+I look forward to hearing from you.`;
+
+  const whatsappURL =
+    "https://wa.me/94760115090?text=" +
+    encodeURIComponent(whatsappMessage);
+
+  window.open(whatsappURL, "_blank");
+});
 </script>
 </body>
 </html>
