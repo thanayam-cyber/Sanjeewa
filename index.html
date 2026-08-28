@@ -899,14 +899,23 @@
   </p>
 </div>
 
+```html
 <form class="booking-grid"
       id="bookingForm"
-      action="https://formspree.io/f/mgaewrpe"
       method="POST">
 
+  <!-- Web3Forms -->
   <input type="hidden"
-         name="_subject"
+         name="access_key"
+         value="c9eb53fb-b469-4550-8e11-491f8275f3c0">
+
+  <input type="hidden"
+         name="subject"
          value="New Wild Hasthi Booking Inquiry">
+
+  <input type="hidden"
+         name="from_name"
+         value="Wild Hasthi Website">
 
   <div class="booking-form">
 
@@ -1056,26 +1065,30 @@
     </div>
 
     <button type="submit"
-            class="btn btn-gold pay-btn">
+            class="btn btn-gold pay-btn"
+            id="bookingSubmit">
       Send Booking Inquiry
     </button>
 
-    <a href="#" 
-   id="whatsappBooking"
-   target="_blank"
-   rel="noopener noreferrer"
-   class="btn btn-outline"
-   style="margin-top:12px; width:100%; text-align:center;">
-  Book via WhatsApp
-</a>
+    <a href="#"
+       id="whatsappBooking"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="btn btn-outline"
+       style="margin-top:12px; width:100%; text-align:center;">
+      Book via WhatsApp
+    </a>
 
-    <div class="secure-note">
+    <div class="secure-note"
+         id="bookingStatus">
       Your booking inquiry will be sent to our reservations team.
     </div>
 
   </div>
 
 </form>
+```
+
 
 </div> </section>
 <!-- ================= FOOTER ================= -->
@@ -1186,76 +1199,78 @@
   
 
   
+```html
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  // Check-out cannot be before check-in
-  const checkin = document.getElementById("checkin");
-  const checkout = document.getElementById("checkout");
+  const bookingForm = document.getElementById("bookingForm");
+  const submitButton = document.getElementById("bookingSubmit");
+  const bookingStatus = document.getElementById("bookingStatus");
 
-  if (checkin && checkout) {
-    checkin.addEventListener("change", function () {
-      checkout.min = checkin.value;
-    });
-  }
+  if (bookingForm) {
 
-  // WhatsApp booking
-  const whatsappButton = document.getElementById("whatsappBooking");
-
-  if (whatsappButton) {
-
-    whatsappButton.addEventListener("click", function (event) {
+    bookingForm.addEventListener("submit", async function (event) {
 
       event.preventDefault();
 
-      const name = document.getElementById("fullName").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const checkinDate = document.getElementById("checkin").value;
-      const checkoutDate = document.getElementById("checkout").value;
-      const guests = document.getElementById("guests").value;
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
 
-      const messageField = document.getElementById("message");
-      const message = messageField ? messageField.value.trim() : "";
+      bookingStatus.textContent = "Sending your booking inquiry...";
 
-      if (!name || !email || !phone || !checkinDate || !checkoutDate || !guests) {
-        alert("Please complete all required booking details first.");
-        return;
+      const formData = new FormData(bookingForm);
+
+      try {
+
+        const response = await fetch(
+          "https://api.web3forms.com/submit",
+          {
+            method: "POST",
+            body: formData
+          }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+          bookingStatus.textContent =
+            "Thank you! Your booking inquiry has been sent successfully. Our reservations team will contact you shortly.";
+
+          bookingStatus.style.display = "block";
+
+          bookingForm.reset();
+
+          submitButton.textContent = "Inquiry Sent";
+
+        } else {
+
+          throw new Error(
+            result.message || "Unable to send booking inquiry."
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error("Booking error:", error);
+
+        bookingStatus.textContent =
+          "Sorry, we could not send your inquiry. Please contact us on WhatsApp.";
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Booking Inquiry";
+
       }
 
-      const whatsappMessage =
-`Hello Wild Hasthi,
-
-I would like to make a booking inquiry.
-
-Guest Name: ${name}
-Email: ${email}
-WhatsApp / Phone: ${phone}
-
-Check-In: ${checkinDate}
-Check-Out: ${checkoutDate}
-Guests: ${guests}
-
-Accommodation: 1 Private Luxury Cabin
-Rate: USD 330 per night
-Game Drive: Included
-
-Special Requests:
-${message || "None"}
-
-Thank you.
-I look forward to hearing from you.`;
-
-      const whatsappURL =
-        "https://wa.me/94760115090?text=" +
-        encodeURIComponent(whatsappMessage);
-
-      window.location.href = whatsappURL;
     });
+
   }
 
 });
 </script>
+```
+
 
 </body>
 </html>
