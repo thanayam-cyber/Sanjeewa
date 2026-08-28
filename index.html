@@ -1186,24 +1186,33 @@
   });
 
   
-<script>
-document.getElementById("whatsappBooking").addEventListener("click", function (event) {
-  event.preventDefault();
 
-  const name = document.getElementById("fullName").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const checkin = document.getElementById("checkin").value;
-  const checkout = document.getElementById("checkout").value;
-  const guests = document.getElementById("guests").value;
-  const message = document.getElementById("message").value.trim();
+document.addEventListener("DOMContentLoaded", function () {
 
-  if (!name || !email || !phone || !checkin || !checkout || !guests) {
-    alert("Please complete your name, email, WhatsApp/phone number, check-in date, check-out date and number of guests first.");
-    return;
-  }
+  const whatsappButton = document.getElementById("whatsappBooking");
 
-  const whatsappMessage =
+  if (!whatsappButton) return;
+
+  whatsappButton.addEventListener("click", function (event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const checkin = document.getElementById("checkin").value;
+    const checkout = document.getElementById("checkout").value;
+    const guests = document.getElementById("guests").value;
+
+    const messageField = document.getElementById("message");
+    const message = messageField ? messageField.value.trim() : "";
+
+    if (!name || !email || !phone || !checkin || !checkout || !guests) {
+      alert("Please complete all required booking details first.");
+      return;
+    }
+
+    const whatsappMessage =
 `Hello Wild Hasthi,
 
 I would like to make a booking inquiry.
@@ -1226,12 +1235,16 @@ ${message || "None"}
 Thank you.
 I look forward to hearing from you.`;
 
-  const whatsappURL =
-    "https://wa.me/94760115090?text=" +
-    encodeURIComponent(whatsappMessage);
+    const whatsappURL =
+      "https://wa.me/94760115090?text=" +
+      encodeURIComponent(whatsappMessage);
 
-  window.open(whatsappURL, "_blank");
+    window.open(whatsappURL, "_blank");
+
+  });
+
 });
+
 </script>
 
 </body>
