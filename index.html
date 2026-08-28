@@ -508,13 +508,51 @@
     .rule-grid{ grid-template-columns:1fr; }
     .row2{ grid-template-columns:1fr; }
     .footer-top{ grid-template-columns:1fr; gap:44px; }
-    .packing-list{ columns:1; }
-    .etiquette-head{ flex-direction:column; align-items:flex-start; }
-  }
+        .packing-list{ columns:1; } 
+    .etiquette-head{ flex-direction:column; align-items:flex-start; } 
+  } 
 </style>
-</head>
-<body>
 
+<!-- Wild Hasthi Hotel / Lodging Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "Wild Hasthi",
+  "description": "Wild Hasthi is an exclusive one-cabin luxury safari retreat in Boroluwalayaya, Thanamalwila, Sri Lanka, offering a private nature escape with a game drive experience included.",
+  "url": "https://wildhasthi.com/",
+  "telephone": "+94760115090",
+  "priceRange": "USD 330 per night",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Boroluwalayaya",
+    "addressLocality": "Thanamalwila",
+    "addressCountry": "LK"
+  },
+  "numberOfRooms": 1,
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Private luxury cabin",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Game drive included",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Nature and wildlife experiences",
+      "value": true
+    }
+  ]
+}
+</script>
+
+</head> 
+<body> 
+ 
 <a href="#booking" class="skip-link">Skip to reservation form</a>
 
 <!-- ================= NAVIGATION ================= -->
