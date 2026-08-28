@@ -888,209 +888,212 @@
 </section>
 
 <!-- ================= BOOKING ================= -->
-<section id="booking"> <div class="wrap"> <div class="section-head"> <span class="eyebrow">Reserve</span>
+<section id="booking">
+  <div class="wrap">
 
-  <h2>Plan Your Stay at Wild Hasthi</h2>
+    <div class="section-head">
+      <span class="eyebrow">Reserve</span>
 
-  <p>
-    Enquire about your stay at our exclusive one-cabin luxury safari
-    retreat in Boroluwalayaya, Thanamalwila. Our reservations team will
-    contact you to confirm availability and your safari arrangements.
-  </p>
-</div>
+      <h2>Plan Your Stay at Wild Hasthi</h2>
 
-```html
-<form class="booking-grid"
-      id="bookingForm"
-      method="POST">
-
-  <!-- Web3Forms -->
-  <input type="hidden"
-         name="access_key"
-         value="c9eb53fb-b469-4550-8e11-491f8275f3c0">
-
-  <input type="hidden"
-         name="subject"
-         value="New Wild Hasthi Booking Inquiry">
-
-  <input type="hidden"
-         name="from_name"
-         value="Wild Hasthi Website">
-
-  <div class="booking-form">
-
-    <h3>Booking Details</h3>
-
-    <p class="sub">
-      Please provide your details and preferred dates.
-    </p>
-
-    <div class="field">
-      <label for="fullName">Full Name</label>
-      <input type="text"
-             id="fullName"
-             name="fullName"
-             placeholder="Your full name"
-             required>
+      <p>
+        Enquire about your stay at our exclusive one-cabin luxury safari
+        retreat in Boroluwalayaya, Thanamalwila. Our reservations team will
+        contact you to confirm availability and your safari arrangements.
+      </p>
     </div>
 
-    <div class="field">
-      <label for="email">Email Address</label>
-      <input type="email"
-             id="email"
-             name="email"
-             placeholder="you@example.com"
-             required>
-    </div>
+    <form class="booking-grid"
+          id="bookingForm"
+          action="https://api.web3forms.com/submit"
+          method="POST">
 
-    <div class="field">
-      <label for="phone">WhatsApp / Phone Number</label>
-      <input type="tel"
-             id="phone"
-             name="phone"
-             placeholder="+94 76 011 5090"
-             required>
-    </div>
+      <!-- Web3Forms -->
+      <input type="hidden"
+             name="access_key"
+             value="c9eb53fb-b469-4550-8e11-491f8275f3c0">
 
-    <div class="row2">
+      <input type="hidden"
+             name="subject"
+             value="New Wild Hasthi Booking Inquiry">
 
-      <div class="field">
-        <label for="checkin">Check-In Date</label>
-        <input type="date"
-               id="checkin"
-               name="checkin"
-               required>
+      <input type="hidden"
+             name="from_name"
+             value="Wild Hasthi Website">
+
+      <div class="booking-form">
+
+        <h3>Booking Details</h3>
+
+        <p class="sub">
+          Please provide your details and preferred dates.
+        </p>
+
+        <div class="field">
+          <label for="fullName">Full Name</label>
+          <input type="text"
+                 id="fullName"
+                 name="fullName"
+                 placeholder="Your full name"
+                 required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email"
+                 id="email"
+                 name="email"
+                 placeholder="you@example.com"
+                 required>
+        </div>
+
+        <div class="field">
+          <label for="phone">WhatsApp / Phone Number</label>
+          <input type="tel"
+                 id="phone"
+                 name="phone"
+                 placeholder="+94 76 011 5090"
+                 required>
+        </div>
+
+        <div class="row2">
+
+          <div class="field">
+            <label for="checkin">Check-In Date</label>
+            <input type="date"
+                   id="checkin"
+                   name="checkin"
+                   required>
+          </div>
+
+          <div class="field">
+            <label for="checkout">Check-Out Date</label>
+            <input type="date"
+                   id="checkout"
+                   name="checkout"
+                   required>
+          </div>
+
+        </div>
+
+        <div class="row2">
+
+          <div class="field">
+            <label for="roomType">Accommodation</label>
+
+            <select id="roomType"
+                    name="roomType"
+                    required>
+
+              <option value="1 Private Luxury Cabin" selected>
+                1 Private Luxury Cabin
+              </option>
+
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="guests">Number of Guests</label>
+
+            <input type="number"
+                   id="guests"
+                   name="guests"
+                   min="1"
+                   max="8"
+                   value="2"
+                   required>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <label for="message">Special Requests</label>
+
+          <textarea id="message"
+                    name="message"
+                    rows="4"
+                    placeholder="Tell us about any special requests, arrival details or experiences you would like to arrange."></textarea>
+        </div>
+
+        <input type="hidden"
+               name="rate"
+               value="USD 330 per night">
+
+        <input type="hidden"
+               name="game_drive"
+               value="Included">
+
       </div>
 
-      <div class="field">
-        <label for="checkout">Check-Out Date</label>
-        <input type="date"
-               id="checkout"
-               name="checkout"
-               required>
-      </div>
+      <div class="payment-panel">
 
-    </div>
+        <h3>Reservation Inquiry</h3>
 
-    <div class="row2">
+        <p class="sub">
+          Our exclusive luxury cabin is available at
+          <strong>USD 330 per night</strong>, with a
+          <strong>game drive included</strong>.
+        </p>
 
-      <div class="field">
-        <label for="roomType">Accommodation</label>
+        <div class="summary">
 
-        <select id="roomType"
-                name="roomType"
-                required>
+          <div class="summary-row">
+            <span>Accommodation</span>
+            <span>1 Luxury Cabin</span>
+          </div>
 
-          <option value="1 Private Luxury Cabin" selected>
-            1 Private Luxury Cabin
-          </option>
+          <div class="summary-row">
+            <span>Rate</span>
+            <span>USD 330 / night</span>
+          </div>
 
-        </select>
-      </div>
+          <div class="summary-row">
+            <span>Game Drive</span>
+            <span>Included</span>
+          </div>
 
-      <div class="field">
-        <label for="guests">Number of Guests</label>
+          <div class="summary-row">
+            <span>WhatsApp</span>
+            <a href="https://wa.me/94760115090"
+               target="_blank"
+               rel="noopener noreferrer">
+              +94 76 011 5090
+            </a>
+          </div>
 
-        <input type="number"
-               id="guests"
-               name="guests"
-               min="1"
-               max="8"
-               value="2"
-               required>
-      </div>
+          <div class="summary-row total">
+            <span>Wild Hasthi</span>
+            <span>Thanamalwila</span>
+          </div>
 
-    </div>
+        </div>
 
-    <div class="field">
-      <label for="message">Special Requests</label>
+        <button type="submit"
+                class="btn btn-gold pay-btn"
+                id="bookingSubmit">
+          Send Booking Inquiry
+        </button>
 
-      <textarea id="message"
-                name="message"
-                rows="4"
-                placeholder="Tell us about any special requests, arrival details or experiences you would like to arrange."></textarea>
-    </div>
-
-    <input type="hidden"
-           name="rate"
-           value="USD 330 per night">
-
-    <input type="hidden"
-           name="game_drive"
-           value="Included">
-
-  </div>
-
-  <div class="payment-panel">
-
-    <h3>Reservation Inquiry</h3>
-
-    <p class="sub">
-      Our exclusive luxury cabin is available at
-      <strong>USD 330 per night</strong>, with a
-      <strong>game drive included</strong>.
-    </p>
-
-    <div class="summary">
-
-      <div class="summary-row">
-        <span>Accommodation</span>
-        <span>1 Luxury Cabin</span>
-      </div>
-
-      <div class="summary-row">
-        <span>Rate</span>
-        <span>USD 330 / night</span>
-      </div>
-
-      <div class="summary-row">
-        <span>Game Drive</span>
-        <span>Included</span>
-      </div>
-
-      <div class="summary-row">
-        <span>WhatsApp</span>
-        <a href="https://wa.me/94760115090"
+        <a href="#"
+           id="whatsappBooking"
            target="_blank"
-           rel="noopener noreferrer">
-          +94 76 011 5090
+           rel="noopener noreferrer"
+           class="btn btn-outline"
+           style="margin-top:12px; width:100%; text-align:center;">
+          Book via WhatsApp
         </a>
+
+        <div class="secure-note"
+             id="bookingStatus">
+          Your booking inquiry will be sent to our reservations team.
+        </div>
+
       </div>
 
-      <div class="summary-row total">
-        <span>Wild Hasthi</span>
-        <span>Thanamalwila</span>
-      </div>
-
-    </div>
-
-    <button type="submit"
-            class="btn btn-gold pay-btn"
-            id="bookingSubmit">
-      Send Booking Inquiry
-    </button>
-
-    <a href="#"
-       id="whatsappBooking"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="btn btn-outline"
-       style="margin-top:12px; width:100%; text-align:center;">
-      Book via WhatsApp
-    </a>
-
-    <div class="secure-note"
-         id="bookingStatus">
-      Your booking inquiry will be sent to our reservations team.
-    </div>
+    </form>
 
   </div>
-
-</form>
-```
-
-
-</div> </section>
+</section>
 <!-- ================= FOOTER ================= -->
 -->
 
