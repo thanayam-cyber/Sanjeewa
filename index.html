@@ -904,6 +904,10 @@
       action="https://formspree.io/f/mgaewrpe"
       method="POST">
 
+  <input type="hidden"
+         name="_subject"
+         value="New Wild Hasthi Booking Inquiry">
+
   <div class="booking-form">
 
     <h3>Booking Details</h3>
@@ -1179,40 +1183,47 @@
   const checkout = document.getElementById('checkout');
   checkin.addEventListener('change', () => { checkout.min = checkin.value; });
 
-  // Card number spacing
-  document.getElementById('cardNumber').addEventListener('input', (e) => {
-    let v = e.target.value.replace(/\D/g, '').slice(0, 16);
-    e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
-  });
-
   
 
+  
+<script>
 document.addEventListener("DOMContentLoaded", function () {
 
+  // Check-out cannot be before check-in
+  const checkin = document.getElementById("checkin");
+  const checkout = document.getElementById("checkout");
+
+  if (checkin && checkout) {
+    checkin.addEventListener("change", function () {
+      checkout.min = checkin.value;
+    });
+  }
+
+  // WhatsApp booking
   const whatsappButton = document.getElementById("whatsappBooking");
 
-  if (!whatsappButton) return;
+  if (whatsappButton) {
 
-  whatsappButton.addEventListener("click", function (event) {
+    whatsappButton.addEventListener("click", function (event) {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    const name = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const checkin = document.getElementById("checkin").value;
-    const checkout = document.getElementById("checkout").value;
-    const guests = document.getElementById("guests").value;
+      const name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const checkinDate = document.getElementById("checkin").value;
+      const checkoutDate = document.getElementById("checkout").value;
+      const guests = document.getElementById("guests").value;
 
-    const messageField = document.getElementById("message");
-    const message = messageField ? messageField.value.trim() : "";
+      const messageField = document.getElementById("message");
+      const message = messageField ? messageField.value.trim() : "";
 
-    if (!name || !email || !phone || !checkin || !checkout || !guests) {
-      alert("Please complete all required booking details first.");
-      return;
-    }
+      if (!name || !email || !phone || !checkinDate || !checkoutDate || !guests) {
+        alert("Please complete all required booking details first.");
+        return;
+      }
 
-    const whatsappMessage =
+      const whatsappMessage =
 `Hello Wild Hasthi,
 
 I would like to make a booking inquiry.
@@ -1221,8 +1232,8 @@ Guest Name: ${name}
 Email: ${email}
 WhatsApp / Phone: ${phone}
 
-Check-In: ${checkin}
-Check-Out: ${checkout}
+Check-In: ${checkinDate}
+Check-Out: ${checkoutDate}
 Guests: ${guests}
 
 Accommodation: 1 Private Luxury Cabin
@@ -1235,16 +1246,15 @@ ${message || "None"}
 Thank you.
 I look forward to hearing from you.`;
 
-    const whatsappURL =
-      "https://wa.me/94760115090?text=" +
-      encodeURIComponent(whatsappMessage);
+      const whatsappURL =
+        "https://wa.me/94760115090?text=" +
+        encodeURIComponent(whatsappMessage);
 
-    window.open(whatsappURL, "_blank");
-
-  });
+      window.location.href = whatsappURL;
+    });
+  }
 
 });
-
 </script>
 
 </body>
