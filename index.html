@@ -1363,34 +1363,23 @@
 </script>
 ```html
 ```html
+```html
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* ================= CHECK-IN / CHECK-OUT ================= */
+  /* =========================================================
+     ELEMENTS
+  ========================================================= */
+
+  const bookingForm = document.getElementById("bookingForm");
 
   const checkin = document.getElementById("checkin");
   const checkout = document.getElementById("checkout");
 
-  if (checkin && checkout) {
-
-    checkin.addEventListener("change", function () {
-
-      checkout.min = checkin.value;
-
-      if (checkout.value && checkout.value < checkin.value) {
-        checkout.value = "";
-      }
-
-    });
-
-  }
-
-
-  /* ================= RATE CALCULATOR ================= */
-
   const packageType = document.getElementById("packageType");
   const adults = document.getElementById("adults");
   const children = document.getElementById("children");
+
   const childAgeField = document.getElementById("childAgeField");
   const childAge = document.getElementById("childAge");
 
@@ -1409,53 +1398,181 @@ document.addEventListener("DOMContentLoaded", function () {
   const rateMessage =
     document.getElementById("rateMessage");
 
+  const submitButton =
+    document.getElementById("bookingSubmit");
+
+  const whatsappButton =
+    document.getElementById("whatsappBooking");
+
+
+  /* =========================================================
+     CHECK-IN / CHECK-OUT
+  ========================================================= */
+
+  if (checkin && checkout) {
+
+    checkin.addEventListener("change", function () {
+
+      checkout.min = checkin.value;
+
+      if (
+        checkout.value &&
+        checkout.value < checkin.value
+      ) {
+        checkout.value = "";
+      }
+
+    });
+
+  }
+
+
+  /* =========================================================
+     CREATE CHILD AGE FIELDS
+  ========================================================= */
+
+  if (children && childAgeField) {
+
+    childAgeField.innerHTML = `
+      <div class="field" id="childAge1Field">
+        <label for="childAge1">Child 1 Age</label>
+
+        <select id="childAge1" name="child_1_age">
+          <option value="">Select age</option>
+          <option value="Under 6">Under 6 years</option>
+          <option value="6-11">6–11 years</option>
+        </select>
+      </div>
+
+      <div
+        class="field"
+        id="childAge2Field"
+        style="display:none; margin-top:12px;"
+      >
+        <label for="childAge2">Child 2 Age</label>
+
+        <select id="childAge2" name="child_2_age">
+          <option value="">Select age</option>
+          <option value="Under 6">Under 6 years</option>
+          <option value="6-11">6–11 years</option>
+        </select>
+      </div>
+    `;
+
+  }
+
+
+  const childAge1 =
+    document.getElementById("childAge1");
+
+  const childAge2 =
+    document.getElementById("childAge2");
+
+  const childAge2Field =
+    document.getElementById("childAge2Field");
+
+
+  /* =========================================================
+     RATE CALCULATION
+  ========================================================= */
 
   function calculateRate() {
 
-    const packageValue = packageType.value;
-    const adultCount = Number(adults.value);
-    const childCount = Number(children.value);
-    const age = childAge.value;
+    const packageValue =
+      packageType.value;
+
+    const adultCount =
+      Number(adults.value);
+
+    const childCount =
+      Number(children.value);
+
+
+    const age1 =
+      childAge1 ? childAge1.value : "";
+
+    const age2 =
+      childAge2 ? childAge2.value : "";
 
 
     let rate = 0;
 
 
-    /* ================= HALF BOARD ================= */
+    /* ---------------------------------------------------------
+       HALF BOARD
+    --------------------------------------------------------- */
 
     if (packageValue === "Half Board") {
 
-      if (adultCount === 1 || adultCount === 2) {
+      /*
+        1 Adult = 330
+        2 Adults = 330
+        3 Adults = 380
+      */
 
+      if (
+        adultCount === 1 ||
+        adultCount === 2
+      ) {
         rate = 330;
+      }
 
-      } else if (adultCount === 3) {
-
+      if (adultCount === 3) {
         rate = 380;
-
       }
 
 
-      if (adultCount === 2 && childCount === 1) {
+      /*
+        2 Adults + 1 Child
+      */
 
-        if (age === "6-11") {
+      if (
+        adultCount === 2 &&
+        childCount === 1
+      ) {
+
+        if (age1 === "6-11") {
           rate = 355;
         }
 
-        if (age === "Under 6") {
+        if (age1 === "Under 6") {
           rate = 330;
         }
 
       }
 
 
-      if (adultCount === 2 && childCount === 2) {
+      /*
+        2 Adults + 2 Children
+      */
 
-        if (age === "6-11") {
+      if (
+        adultCount === 2 &&
+        childCount === 2
+      ) {
+
+        const child1Paying =
+          age1 === "6-11";
+
+        const child2Paying =
+          age2 === "6-11";
+
+
+        if (
+          child1Paying &&
+          child2Paying
+        ) {
           rate = 380;
         }
 
-        if (age === "Under 6") {
+        else if (
+          child1Paying ||
+          child2Paying
+        ) {
+          rate = 355;
+        }
+
+        else {
           rate = 330;
         }
 
@@ -1464,41 +1581,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================= ALL INCLUSIVE ================= */
+    /* ---------------------------------------------------------
+       ALL INCLUSIVE
+    --------------------------------------------------------- */
 
     if (packageValue === "All Inclusive") {
 
-      if (adultCount === 1 || adultCount === 2) {
+      /*
+        1 Adult = 380
+        2 Adults = 380
+        3 Adults = 430
+      */
 
+      if (
+        adultCount === 1 ||
+        adultCount === 2
+      ) {
         rate = 380;
+      }
 
-      } else if (adultCount === 3) {
-
+      if (adultCount === 3) {
         rate = 430;
-
       }
 
 
-      if (adultCount === 2 && childCount === 1) {
+      /*
+        2 Adults + 1 Child
+      */
 
-        if (age === "6-11") {
+      if (
+        adultCount === 2 &&
+        childCount === 1
+      ) {
+
+        if (age1 === "6-11") {
           rate = 400;
         }
 
-        if (age === "Under 6") {
+        if (age1 === "Under 6") {
           rate = 380;
         }
 
       }
 
 
-      if (adultCount === 2 && childCount === 2) {
+      /*
+        2 Adults + 2 Children
+      */
 
-        if (age === "6-11") {
+      if (
+        adultCount === 2 &&
+        childCount === 2
+      ) {
+
+        const child1Paying =
+          age1 === "6-11";
+
+        const child2Paying =
+          age2 === "6-11";
+
+
+        if (
+          child1Paying &&
+          child2Paying
+        ) {
           rate = 430;
         }
 
-        if (age === "Under 6") {
+        else if (
+          child1Paying ||
+          child2Paying
+        ) {
+          rate = 400;
+        }
+
+        else {
           rate = 380;
         }
 
@@ -1507,14 +1664,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================= DISPLAY ================= */
+    /* =========================================================
+       DISPLAY GUEST INFORMATION
+    ========================================================= */
 
     selectedPackage.textContent =
       packageValue;
 
+
     let guestText =
       adultCount +
-      (adultCount === 1 ? " Adult" : " Adults");
+      (
+        adultCount === 1
+          ? " Adult"
+          : " Adults"
+      );
 
 
     if (childCount > 0) {
@@ -1522,7 +1686,11 @@ document.addEventListener("DOMContentLoaded", function () {
       guestText +=
         " + " +
         childCount +
-        (childCount === 1 ? " Child" : " Children");
+        (
+          childCount === 1
+            ? " Child"
+            : " Children"
+        );
 
     }
 
@@ -1532,44 +1700,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     displayRate.textContent =
-      "USD " + rate;
+      rate > 0
+        ? "USD " + rate
+        : "Select guests";
 
 
     calculatedRate.value =
-      "USD " + rate + " per night";
+      rate > 0
+        ? "USD " + rate + " per night"
+        : "";
 
 
-    rateMessage.textContent =
-      "Your selected rate is USD " +
-      rate +
-      " per night. Final confirmation will be provided by our reservations team.";
+    if (rate > 0) {
+
+      rateMessage.textContent =
+        "Your selected rate is USD " +
+        rate +
+        " per night. Final confirmation will be provided by our reservations team.";
+
+    }
 
   }
 
 
-  /* ================= CHILDREN ================= */
+  /* =========================================================
+     OCCUPANCY CONTROL
+  ========================================================= */
 
-  function updateChildren() {
+  function updateOccupancy() {
 
-    const childCount =
-      Number(children.value);
+    const adultCount =
+      Number(adults.value);
 
 
-    if (childCount > 0) {
+    /*
+      3 Adults = maximum occupancy.
+      Disable children.
+    */
 
-      childAgeField.style.display =
-        "block";
+    if (adultCount === 3) {
 
-      childAge.required = true;
+      children.value = "0";
 
-    } else {
+      children.disabled = true;
 
       childAgeField.style.display =
         "none";
 
-      childAge.required = false;
 
-      childAge.value = "";
+      if (childAge1) {
+        childAge1.required = false;
+        childAge1.value = "";
+      }
+
+      if (childAge2) {
+        childAge2.required = false;
+        childAge2.value = "";
+      }
+
+
+      rateMessage.textContent =
+        "Maximum occupancy reached: 3 adults. Children cannot be added.";
+
+    }
+
+    else {
+
+      children.disabled = false;
+
+      updateChildrenFields();
 
     }
 
@@ -1579,38 +1778,155 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  packageType.addEventListener(
-    "change",
-    calculateRate
-  );
+  /* =========================================================
+     CHILDREN AGE CONTROL
+  ========================================================= */
 
-  adults.addEventListener(
-    "change",
-    calculateRate
-  );
+  function updateChildrenFields() {
 
-  children.addEventListener(
-    "change",
-    updateChildren
-  );
-
-  childAge.addEventListener(
-    "change",
-    calculateRate
-  );
+    const childCount =
+      Number(children.value);
 
 
-  calculateRate();
+    if (childCount === 0) {
+
+      childAgeField.style.display =
+        "none";
 
 
-  /* ================= FORMSPREE ================= */
+      if (childAge1) {
+        childAge1.required = false;
+        childAge1.value = "";
+      }
 
-  const bookingForm =
-    document.getElementById("bookingForm");
+      if (childAge2) {
+        childAge2.required = false;
+        childAge2.value = "";
+      }
 
-  const submitButton =
-    document.getElementById("bookingSubmit");
+    }
 
+
+    if (childCount === 1) {
+
+      childAgeField.style.display =
+        "block";
+
+
+      if (childAge1) {
+        childAge1.required = true;
+      }
+
+
+      if (childAge2Field) {
+        childAge2Field.style.display =
+          "none";
+      }
+
+
+      if (childAge2) {
+        childAge2.required = false;
+        childAge2.value = "";
+      }
+
+    }
+
+
+    if (childCount === 2) {
+
+      childAgeField.style.display =
+        "block";
+
+
+      if (childAge1) {
+        childAge1.required = true;
+      }
+
+
+      if (childAge2Field) {
+        childAge2Field.style.display =
+          "block";
+      }
+
+
+      if (childAge2) {
+        childAge2.required = true;
+      }
+
+    }
+
+
+    calculateRate();
+
+  }
+
+
+  /* =========================================================
+     EVENT LISTENERS
+  ========================================================= */
+
+  if (packageType) {
+
+    packageType.addEventListener(
+      "change",
+      calculateRate
+    );
+
+  }
+
+
+  if (adults) {
+
+    adults.addEventListener(
+      "change",
+      updateOccupancy
+    );
+
+  }
+
+
+  if (children) {
+
+    children.addEventListener(
+      "change",
+      updateChildrenFields
+    );
+
+  }
+
+
+  if (childAge1) {
+
+    childAge1.addEventListener(
+      "change",
+      calculateRate
+    );
+
+  }
+
+
+  if (childAge2) {
+
+    childAge2.addEventListener(
+      "change",
+      calculateRate
+    );
+
+  }
+
+
+  /* =========================================================
+     INITIAL SETUP
+  ========================================================= */
+
+  if (adults) {
+    updateOccupancy();
+  }
+
+
+  /* =========================================================
+     FORMSPREE SUBMISSION
+  ========================================================= */
 
   if (bookingForm) {
 
@@ -1621,7 +1937,70 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
 
-        submitButton.disabled = true;
+        /*
+          Make sure the rate is calculated.
+        */
+
+        calculateRate();
+
+
+        if (
+          !calculatedRate.value
+        ) {
+
+          alert(
+            "Please select your package and guest details."
+          );
+
+          return;
+
+        }
+
+
+        /*
+          Make sure child ages are selected.
+        */
+
+        const childCount =
+          Number(children.value);
+
+
+        if (
+          childCount >= 1 &&
+          childAge1 &&
+          !childAge1.value
+        ) {
+
+          alert(
+            "Please select the age of Child 1."
+          );
+
+          childAge1.focus();
+
+          return;
+
+        }
+
+
+        if (
+          childCount === 2 &&
+          childAge2 &&
+          !childAge2.value
+        ) {
+
+          alert(
+            "Please select the age of Child 2."
+          );
+
+          childAge2.focus();
+
+          return;
+
+        }
+
+
+        submitButton.disabled =
+          true;
 
         submitButton.textContent =
           "Sending...";
@@ -1647,20 +2026,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-          if (response.ok) {
-
-            submitButton.textContent =
-              "Inquiry Sent";
-
-            alert(
-              "Thank you! Your booking inquiry has been sent successfully. Our reservations team will contact you shortly."
-            );
-
-            bookingForm.reset();
-
-            calculateRate();
-
-          } else {
+          if (!response.ok) {
 
             throw new Error(
               "Formspree submission failed."
@@ -1669,17 +2035,52 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
 
-        } catch (error) {
+          submitButton.textContent =
+            "Inquiry Sent";
+
+
+          alert(
+            "Thank you! Your booking inquiry has been sent successfully. Our reservations team will contact you shortly."
+          );
+
+
+          bookingForm.reset();
+
+
+          children.disabled =
+            false;
+
+
+          updateChildrenFields();
+
+
+          calculateRate();
+
+
+          submitButton.disabled =
+            false;
+
+          submitButton.textContent =
+            "Send Booking Inquiry";
+
+
+        }
+
+        catch (error) {
 
           console.error(
             "Booking error:",
             error
           );
 
-          submitButton.disabled = false;
+
+          submitButton.disabled =
+            false;
+
 
           submitButton.textContent =
             "Send Booking Inquiry";
+
 
           alert(
             "Sorry, we could not send your inquiry. Please try again or contact us on WhatsApp."
@@ -1693,11 +2094,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ================= WHATSAPP ================= */
-
-  const whatsappButton =
-    document.getElementById("whatsappBooking");
-
+  /* =========================================================
+     WHATSAPP BOOKING
+  ========================================================= */
 
   if (whatsappButton) {
 
@@ -1709,43 +2108,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const name =
-          document.getElementById("fullName")
-            ?.value.trim() || "";
+          document.getElementById(
+            "fullName"
+          )?.value.trim() || "";
+
 
         const email =
-          document.getElementById("email")
-            ?.value.trim() || "";
+          document.getElementById(
+            "email"
+          )?.value.trim() || "";
+
 
         const phone =
-          document.getElementById("phone")
-            ?.value.trim() || "";
+          document.getElementById(
+            "phone"
+          )?.value.trim() || "";
+
 
         const checkinValue =
-          document.getElementById("checkin")
-            ?.value || "";
+          checkin?.value || "";
+
 
         const checkoutValue =
-          document.getElementById("checkout")
-            ?.value || "";
+          checkout?.value || "";
+
 
         const packageValue =
           packageType.value;
 
+
         const adultCount =
           adults.value;
+
 
         const childCount =
           children.value;
 
-        const age =
-          childAge.value || "Not specified";
+
+        const age1 =
+          childAge1?.value ||
+          "Not specified";
+
+
+        const age2 =
+          childAge2?.value ||
+          "";
+
 
         const rate =
           calculatedRate.value;
 
+
         const message =
-          document.getElementById("message")
-            ?.value.trim() || "";
+          document.getElementById(
+            "message"
+          )?.value.trim() || "";
+
+
+        let childrenDetails =
+          "No children";
+
+
+        if (Number(childCount) === 1) {
+
+          childrenDetails =
+            "1 Child - " +
+            age1;
+
+        }
+
+
+        if (Number(childCount) === 2) {
+
+          childrenDetails =
+            "Child 1 - " +
+            age1 +
+            ", Child 2 - " +
+            age2;
+
+        }
 
 
         const whatsappMessage =
@@ -1761,11 +2202,12 @@ Check-in: ${checkinValue}
 Check-out: ${checkoutValue}
 
 Package: ${packageValue}
+
 Adults: ${adultCount}
-Children: ${childCount}
-Children's Age: ${age}
+Children: ${childrenDetails}
 
 Accommodation: 1 Private Luxury Cabin
+
 Rate: ${rate}
 
 Game Drive: Included for all registered guests
