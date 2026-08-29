@@ -888,6 +888,7 @@
 </section>
 
 ```html
+```html
 <!-- ================= BOOKING ================= -->
 <section id="booking">
   <div class="wrap">
@@ -899,8 +900,8 @@
 
       <p>
         Enquire about your stay at our exclusive one-cabin luxury safari
-        retreat in Boroluwalayaya, Thanamalwila. Our reservations team will
-        contact you to confirm availability and your safari arrangements.
+        retreat in Boroluwalayaya, Thanamalwila. Select your preferred
+        package and guests to see your nightly rate.
       </p>
     </div>
 
@@ -917,16 +918,27 @@
         value="New Wild Hasthi Booking Inquiry"
       >
 
+      <!-- Hidden calculated rate sent to Formspree -->
+      <input
+        type="hidden"
+        id="calculatedRate"
+        name="calculated_rate"
+        value="USD 330 per night"
+      >
+
       <div class="booking-form">
 
         <h3>Booking Details</h3>
 
         <p class="sub">
-          Please provide your details and preferred dates.
+          Select your package, dates and number of guests.
         </p>
+
+        <!-- NAME -->
 
         <div class="field">
           <label for="fullName">Full Name</label>
+
           <input
             type="text"
             id="fullName"
@@ -936,8 +948,12 @@
           >
         </div>
 
+
+        <!-- EMAIL -->
+
         <div class="field">
           <label for="email">Email Address</label>
+
           <input
             type="email"
             id="email"
@@ -947,21 +963,29 @@
           >
         </div>
 
+
+        <!-- PHONE -->
+
         <div class="field">
           <label for="phone">WhatsApp / Phone Number</label>
+
           <input
             type="tel"
             id="phone"
             name="phone"
-            placeholder="+94 718912032"
+            placeholder="+94 71 891 2032"
             required
           >
         </div>
+
+
+        <!-- DATES -->
 
         <div class="row2">
 
           <div class="field">
             <label for="checkin">Check-In Date</label>
+
             <input
               type="date"
               id="checkin"
@@ -970,8 +994,10 @@
             >
           </div>
 
+
           <div class="field">
             <label for="checkout">Check-Out Date</label>
+
             <input
               type="date"
               id="checkout"
@@ -982,40 +1008,139 @@
 
         </div>
 
+
+        <!-- PACKAGE -->
+
+        <div class="field">
+
+          <label for="packageType">
+            Stay Package
+          </label>
+
+          <select
+            id="packageType"
+            name="package"
+            required
+          >
+
+            <option value="Half Board" selected>
+              Half Board — USD 330 from
+            </option>
+
+            <option value="All Inclusive">
+              All Inclusive — USD 380 from
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ADULTS / CHILDREN -->
+
         <div class="row2">
 
           <div class="field">
-            <label for="roomType">Accommodation</label>
+
+            <label for="adults">
+              Adults
+            </label>
 
             <select
-              id="roomType"
-              name="roomType"
+              id="adults"
+              name="adults"
               required
             >
-              <option value="1 Private Luxury Cabin" selected>
-                1 Private Luxury Cabin
+
+              <option value="1">
+                1 Adult
               </option>
+
+              <option value="2" selected>
+                2 Adults
+              </option>
+
+              <option value="3">
+                3 Adults
+              </option>
+
             </select>
+
           </div>
 
-          <div class="field">
-            <label for="guests">Number of Guests</label>
 
-            <input
-              type="number"
-              id="guests"
-              name="guests"
-              min="1"
-              max="8"
-              value="2"
+          <div class="field">
+
+            <label for="children">
+              Children
+            </label>
+
+            <select
+              id="children"
+              name="children"
               required
             >
+
+              <option value="0" selected>
+                No Children
+              </option>
+
+              <option value="1">
+                1 Child
+              </option>
+
+              <option value="2">
+                2 Children
+              </option>
+
+            </select>
+
           </div>
 
         </div>
 
+
+        <!-- CHILD AGE -->
+
+        <div
+          class="field"
+          id="childAgeField"
+          style="display:none;"
+        >
+
+          <label for="childAge">
+            Children's Age
+          </label>
+
+          <select
+            id="childAge"
+            name="child_age"
+          >
+
+            <option value="">
+              Select age
+            </option>
+
+            <option value="Under 6">
+              Under 6 years
+            </option>
+
+            <option value="6-11">
+              6–11 years
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- SPECIAL REQUESTS -->
+
         <div class="field">
-          <label for="message">Special Requests</label>
+
+          <label for="message">
+            Special Requests
+          </label>
 
           <textarea
             id="message"
@@ -1023,66 +1148,93 @@
             rows="4"
             placeholder="Tell us about any special requests, arrival details or experiences you would like to arrange."
           ></textarea>
+
         </div>
 
-        <input
-          type="hidden"
-          name="rate"
-          value="USD 330 per night"
-        >
+
+        <!-- HIDDEN PACKAGE INFORMATION -->
 
         <input
           type="hidden"
           name="game_drive"
-          value="Included"
+          value="Included for all registered guests"
+        >
+
+        <input
+          type="hidden"
+          name="accommodation"
+          value="1 Private Luxury Cabin"
         >
 
       </div>
 
+
+      <!-- ================= RATE PANEL ================= -->
+
       <div class="payment-panel">
 
-        <h3>Reservation Inquiry</h3>
+        <h3>Your Reservation</h3>
 
         <p class="sub">
-          Our exclusive luxury cabin is available at
-          <strong>USD 330 per night</strong>, with a
-          <strong>game drive included</strong>.
+          Select your package and guests to see your nightly rate.
         </p>
+
 
         <div class="summary">
 
           <div class="summary-row">
             <span>Accommodation</span>
-            <span>1 Luxury Cabin</span>
+            <span>1 Private Luxury Cabin</span>
           </div>
 
+
           <div class="summary-row">
-            <span>Rate</span>
-            <span>USD 330 / night</span>
+            <span>Package</span>
+            <span id="selectedPackage">
+              Half Board
+            </span>
           </div>
+
+
+          <div class="summary-row">
+            <span>Guests</span>
+            <span id="selectedGuests">
+              2 Adults
+            </span>
+          </div>
+
 
           <div class="summary-row">
             <span>Game Drive</span>
             <span>Included</span>
           </div>
 
-          <div class="summary-row">
-            <span>WhatsApp</span>
-            <a
-              href="https://wa.me/94718912032"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              +94 71 891 2032
-            </a>
-          </div>
 
           <div class="summary-row total">
-            <span>Wild Hasthi</span>
-            <span>Thanamalwila</span>
+
+            <span>
+              Rate per night
+            </span>
+
+            <strong id="displayRate">
+              USD 330
+            </strong>
+
           </div>
 
         </div>
+
+
+        <div
+          class="secure-note"
+          id="rateMessage"
+          style="margin-top:18px;"
+        >
+          Your selected rate will be confirmed by our reservations team.
+        </div>
+
+
+        <!-- SUBMIT -->
 
         <button
           type="submit"
@@ -1091,6 +1243,9 @@
         >
           Send Booking Inquiry
         </button>
+
+
+        <!-- WHATSAPP -->
 
         <a
           href="https://wa.me/94718912032"
@@ -1103,20 +1258,13 @@
           Book via WhatsApp
         </a>
 
-        <div
-          class="secure-note"
-          id="bookingStatus"
-        >
-          Your booking inquiry will be sent to our reservations team.
-        </div>
-
       </div>
 
     </form>
 
   </div>
 </section>
-```html
+
 <!-- ================= FOOTER ================= -->
 
 <footer>
@@ -1214,37 +1362,9 @@
   document.querySelectorAll('img.logo-mark-img').forEach(img => { img.src = WILD_HASTHI_LOGO; });
 </script>
 ```html
+```html
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
-  /* ================= MOBILE NAV ================= */
-
-  const navToggle = document.getElementById("navToggle");
-  const navLinks = document.getElementById("navLinks");
-
-  if (navToggle && navLinks) {
-
-    navToggle.addEventListener("click", function () {
-
-      const isOpen = navLinks.classList.toggle("open");
-
-      navToggle.setAttribute("aria-expanded", isOpen);
-
-    });
-
-    navLinks.querySelectorAll("a").forEach(function (link) {
-
-      link.addEventListener("click", function () {
-
-        navLinks.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-
-      });
-
-    });
-
-  }
-
 
   /* ================= CHECK-IN / CHECK-OUT ================= */
 
@@ -1266,129 +1386,369 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ================= FORM SUBMISSION ================= */
+  /* ================= RATE CALCULATOR ================= */
 
-  const bookingForm = document.getElementById("bookingForm");
-  const submitButton = document.getElementById("bookingSubmit");
-  const bookingStatus = document.getElementById("bookingStatus");
+  const packageType = document.getElementById("packageType");
+  const adults = document.getElementById("adults");
+  const children = document.getElementById("children");
+  const childAgeField = document.getElementById("childAgeField");
+  const childAge = document.getElementById("childAge");
+
+  const selectedPackage =
+    document.getElementById("selectedPackage");
+
+  const selectedGuests =
+    document.getElementById("selectedGuests");
+
+  const displayRate =
+    document.getElementById("displayRate");
+
+  const calculatedRate =
+    document.getElementById("calculatedRate");
+
+  const rateMessage =
+    document.getElementById("rateMessage");
+
+
+  function calculateRate() {
+
+    const packageValue = packageType.value;
+    const adultCount = Number(adults.value);
+    const childCount = Number(children.value);
+    const age = childAge.value;
+
+
+    let rate = 0;
+
+
+    /* ================= HALF BOARD ================= */
+
+    if (packageValue === "Half Board") {
+
+      if (adultCount === 1 || adultCount === 2) {
+
+        rate = 330;
+
+      } else if (adultCount === 3) {
+
+        rate = 380;
+
+      }
+
+
+      if (adultCount === 2 && childCount === 1) {
+
+        if (age === "6-11") {
+          rate = 355;
+        }
+
+        if (age === "Under 6") {
+          rate = 330;
+        }
+
+      }
+
+
+      if (adultCount === 2 && childCount === 2) {
+
+        if (age === "6-11") {
+          rate = 380;
+        }
+
+        if (age === "Under 6") {
+          rate = 330;
+        }
+
+      }
+
+    }
+
+
+    /* ================= ALL INCLUSIVE ================= */
+
+    if (packageValue === "All Inclusive") {
+
+      if (adultCount === 1 || adultCount === 2) {
+
+        rate = 380;
+
+      } else if (adultCount === 3) {
+
+        rate = 430;
+
+      }
+
+
+      if (adultCount === 2 && childCount === 1) {
+
+        if (age === "6-11") {
+          rate = 400;
+        }
+
+        if (age === "Under 6") {
+          rate = 380;
+        }
+
+      }
+
+
+      if (adultCount === 2 && childCount === 2) {
+
+        if (age === "6-11") {
+          rate = 430;
+        }
+
+        if (age === "Under 6") {
+          rate = 380;
+        }
+
+      }
+
+    }
+
+
+    /* ================= DISPLAY ================= */
+
+    selectedPackage.textContent =
+      packageValue;
+
+    let guestText =
+      adultCount +
+      (adultCount === 1 ? " Adult" : " Adults");
+
+
+    if (childCount > 0) {
+
+      guestText +=
+        " + " +
+        childCount +
+        (childCount === 1 ? " Child" : " Children");
+
+    }
+
+
+    selectedGuests.textContent =
+      guestText;
+
+
+    displayRate.textContent =
+      "USD " + rate;
+
+
+    calculatedRate.value =
+      "USD " + rate + " per night";
+
+
+    rateMessage.textContent =
+      "Your selected rate is USD " +
+      rate +
+      " per night. Final confirmation will be provided by our reservations team.";
+
+  }
+
+
+  /* ================= CHILDREN ================= */
+
+  function updateChildren() {
+
+    const childCount =
+      Number(children.value);
+
+
+    if (childCount > 0) {
+
+      childAgeField.style.display =
+        "block";
+
+      childAge.required = true;
+
+    } else {
+
+      childAgeField.style.display =
+        "none";
+
+      childAge.required = false;
+
+      childAge.value = "";
+
+    }
+
+
+    calculateRate();
+
+  }
+
+
+  packageType.addEventListener(
+    "change",
+    calculateRate
+  );
+
+  adults.addEventListener(
+    "change",
+    calculateRate
+  );
+
+  children.addEventListener(
+    "change",
+    updateChildren
+  );
+
+  childAge.addEventListener(
+    "change",
+    calculateRate
+  );
+
+
+  calculateRate();
+
+
+  /* ================= FORMSPREE ================= */
+
+  const bookingForm =
+    document.getElementById("bookingForm");
+
+  const submitButton =
+    document.getElementById("bookingSubmit");
+
 
   if (bookingForm) {
 
-    bookingForm.addEventListener("submit", async function (event) {
+    bookingForm.addEventListener(
+      "submit",
+      async function (event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      if (submitButton) {
+
         submitButton.disabled = true;
-        submitButton.textContent = "Sending...";
-      }
 
-      if (bookingStatus) {
-        bookingStatus.textContent =
-          "Sending your booking inquiry...";
-        bookingStatus.style.display = "block";
-      }
+        submitButton.textContent =
+          "Sending...";
 
-      const formData = new FormData(bookingForm);
 
-      try {
+        const formData =
+          new FormData(bookingForm);
 
-        const response = await fetch(
-          bookingForm.action,
-          {
-            method: "POST",
-            body: formData,
-            headers: {
-              "Accept": "application/json"
-            }
+
+        try {
+
+          const response =
+            await fetch(
+              bookingForm.action,
+              {
+                method: "POST",
+                body: formData,
+                headers: {
+                  "Accept":
+                    "application/json"
+                }
+              }
+            );
+
+
+          if (response.ok) {
+
+            submitButton.textContent =
+              "Inquiry Sent";
+
+            alert(
+              "Thank you! Your booking inquiry has been sent successfully. Our reservations team will contact you shortly."
+            );
+
+            bookingForm.reset();
+
+            calculateRate();
+
+          } else {
+
+            throw new Error(
+              "Formspree submission failed."
+            );
+
           }
-        );
 
-        const result = await response.json();
 
-        if (response.ok) {
+        } catch (error) {
 
-          if (bookingStatus) {
-            bookingStatus.textContent =
-              "Thank you! Your booking inquiry has been sent successfully. Our reservations team will contact you shortly.";
-          }
+          console.error(
+            "Booking error:",
+            error
+          );
 
-          bookingForm.reset();
+          submitButton.disabled = false;
 
-          if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = "Inquiry Sent";
-          }
+          submitButton.textContent =
+            "Send Booking Inquiry";
 
-        } else {
-
-          throw new Error(
-            result.error ||
-            result.message ||
-            "Unable to send booking inquiry."
+          alert(
+            "Sorry, we could not send your inquiry. Please try again or contact us on WhatsApp."
           );
 
         }
 
-      } catch (error) {
-
-        console.error("Booking error:", error);
-
-        if (bookingStatus) {
-          bookingStatus.textContent =
-            "Sorry, we could not send your inquiry. Please try again or contact us on WhatsApp.";
-        }
-
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.textContent = "Send Booking Inquiry";
-        }
-
       }
-
-    });
+    );
 
   }
 
 
-  /* ================= WHATSAPP BOOKING ================= */
+  /* ================= WHATSAPP ================= */
 
   const whatsappButton =
     document.getElementById("whatsappBooking");
 
+
   if (whatsappButton) {
 
-    whatsappButton.addEventListener("click", function (event) {
+    whatsappButton.addEventListener(
+      "click",
+      function (event) {
 
-      event.preventDefault();
-
-      const name =
-        document.getElementById("fullName")?.value.trim() || "";
-
-      const email =
-        document.getElementById("email")?.value.trim() || "";
-
-      const phone =
-        document.getElementById("phone")?.value.trim() || "";
-
-      const checkinValue =
-        document.getElementById("checkin")?.value || "";
-
-      const checkoutValue =
-        document.getElementById("checkout")?.value || "";
-
-      const guests =
-        document.getElementById("guests")?.value || "";
-
-      const roomType =
-        document.getElementById("roomType")?.value ||
-        "1 Private Luxury Cabin";
-
-      const message =
-        document.getElementById("message")?.value.trim() || "";
+        event.preventDefault();
 
 
-      const whatsappMessage =
+        const name =
+          document.getElementById("fullName")
+            ?.value.trim() || "";
+
+        const email =
+          document.getElementById("email")
+            ?.value.trim() || "";
+
+        const phone =
+          document.getElementById("phone")
+            ?.value.trim() || "";
+
+        const checkinValue =
+          document.getElementById("checkin")
+            ?.value || "";
+
+        const checkoutValue =
+          document.getElementById("checkout")
+            ?.value || "";
+
+        const packageValue =
+          packageType.value;
+
+        const adultCount =
+          adults.value;
+
+        const childCount =
+          children.value;
+
+        const age =
+          childAge.value || "Not specified";
+
+        const rate =
+          calculatedRate.value;
+
+        const message =
+          document.getElementById("message")
+            ?.value.trim() || "";
+
+
+        const whatsappMessage =
 `Hello Wild Hasthi,
 
 I would like to make a reservation.
@@ -1396,89 +1756,19 @@ I would like to make a reservation.
 Name: ${name}
 Email: ${email}
 Phone / WhatsApp: ${phone}
+
 Check-in: ${checkinValue}
 Check-out: ${checkoutValue}
-Number of Guests: ${guests}
-Accommodation: ${roomType}
 
-Rate: USD 330 per night
-Game Drive: Included
+Package: ${packageValue}
+Adults: ${adultCount}
+Children: ${childCount}
+Children's Age: ${age}
 
-Special Requests:
-${message}
+Accommodation: 1 Private Luxury Cabin
+Rate: ${rate}
 
-Thank you.
-I look forward to hearing from you.`;
-
-
-      const whatsappURL =
-        "https://wa.me/94718912032?text=" +
-        encodeURIComponent(whatsappMessage);
-
-
-      window.open(whatsappURL, "_blank");
-
-    });
-
-  }
-
-});
-</script>
-```html id="p8x3kd"
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  /* ================= WHATSAPP BOOKING ================= */
-
-  const whatsappButton =
-    document.getElementById("whatsappBooking");
-
-  if (whatsappButton) {
-
-    whatsappButton.addEventListener("click", function (event) {
-
-      event.preventDefault();
-
-      const name =
-        document.getElementById("fullName")?.value.trim() || "";
-
-      const email =
-        document.getElementById("email")?.value.trim() || "";
-
-      const phone =
-        document.getElementById("phone")?.value.trim() || "";
-
-      const checkin =
-        document.getElementById("checkin")?.value || "";
-
-      const checkout =
-        document.getElementById("checkout")?.value || "";
-
-      const guests =
-        document.getElementById("guests")?.value || "";
-
-      const roomType =
-        document.getElementById("roomType")?.value ||
-        "1 Private Luxury Cabin";
-
-      const message =
-        document.getElementById("message")?.value.trim() || "";
-
-      const whatsappMessage =
-`Hello Wild Hasthi,
-
-I would like to make a reservation.
-
-Name: ${name}
-Email: ${email}
-Phone / WhatsApp: ${phone}
-Check-in: ${checkin}
-Check-out: ${checkout}
-Number of Guests: ${guests}
-Accommodation: ${roomType}
-
-Rate: USD 330 per night
-Game Drive: Included
+Game Drive: Included for all registered guests
 
 Special Requests:
 ${message}
@@ -1486,19 +1776,23 @@ ${message}
 Thank you.
 I look forward to hearing from you.`;
 
-      const whatsappURL =
-        "https://wa.me/94718912032?text=" +
-        encodeURIComponent(whatsappMessage);
 
-      window.open(whatsappURL, "_blank");
+        const whatsappURL =
+          "https://wa.me/94718912032?text=" +
+          encodeURIComponent(
+            whatsappMessage
+          );
 
-    });
+
+        window.open(
+          whatsappURL,
+          "_blank"
+        );
+
+      }
+    );
 
   }
 
 });
 </script>
-
-</body>
-</html>
-```
