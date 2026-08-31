@@ -369,19 +369,22 @@
 }
 
 
+css
 /* EXPERIENCE PHOTO */
 
 .exp-image{
   width:calc(100% + 68px);
-  height:230px;
+  height:260px;
   margin-left:-34px;
-  object-fit:cover;
+  object-fit:contain;
+  object-position:center;
   display:block;
+  background:var(--cream-alt);
   transition:transform .6s ease;
 }
 
 .exp-card:hover .exp-image{
-  transform:scale(1.04);
+  transform:scale(1.02);
 }
 
 
