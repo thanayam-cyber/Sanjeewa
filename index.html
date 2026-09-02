@@ -19,7 +19,15 @@
 :root{--green:#18231f;--green2:#24332b;--cream:#f5f0e5;--paper:#ebe2d0;--gold:#c5a880;--text:#344038;--muted:#6e776f;--white:#fff;--line:rgba(24,35,31,.14);--max:1280px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--text);font-family:Jost,Arial,sans-serif;font-weight:300;line-height:1.7}a{color:inherit;text-decoration:none}img{display:block;width:100%}.wrap{width:min(var(--max),calc(100% - 64px));margin:auto}.eyebrow{font-size:.72rem;letter-spacing:.23em;text-transform:uppercase;color:var(--gold);font-weight:500}.serif{font-family:Fraunces,Georgia,serif;font-weight:400}.section{padding:120px 0}.section-head{max-width:760px;margin-bottom:60px}.section-head h2{font-size:clamp(2.5rem,5vw,5rem);line-height:1.02;margin:15px 0 20px;color:var(--green);font-family:Fraunces,Georgia,serif;font-weight:400}.section-head p{font-size:1.08rem;color:var(--muted);max-width:620px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:14px 23px;border:1px solid rgba(255,255,255,.45);font-size:.73rem;letter-spacing:.18em;text-transform:uppercase;transition:.3s}.btn:hover{background:var(--white);color:var(--green);transform:translateY(-2px)}.btn.dark{border-color:var(--green);color:var(--green)}.btn.dark:hover{background:var(--green);color:var(--cream)}
 /* NAV */
-.nav{position:fixed;z-index:20;top:0;left:0;width:100%;padding:24px 0;color:#fff;transition:.35s}.nav.scrolled{background:rgba(24,35,31,.97);padding:15px 0;box-shadow:0 8px 30px #0002}.nav-inner{width:min(1400px,calc(100% - 48px));margin:auto;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;flex-direction:column;line-height:1}.brand strong{font:500 1.5rem Fraunces,serif;letter-spacing:.04em}.brand span{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-top:7px;color:#d7c9b1}.links{display:flex;gap:30px;align-items:center;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}.links a{opacity:.9}.links a:hover{color:var(--gold)}.nav-cta{border:1px solid var(--gold);padding:11px 18px;color:#fff}.menu{display:none;background:none;border:0;color:#fff;font-size:1.6rem}
+.nav{position:fixed;z-index:20;top:0;left:0;width:100%;padding:24px 0;color:#fff;transition:.35s}.nav.scrolled{background:rgba(24,35,31,.97);padding:15px 0;box-shadow:0 8px 30px #0002}.nav-inner{width:min(1400px,calc(100% - 48px));margin:auto;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;flex-direction:row;align-items:center;gap:12px;line-height:1}
+  .brand-logo{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  display:block;
+  flex-shrink:0;
+}.
+  brand strong{font:500 1.5rem Fraunces,serif;letter-spacing:.04em}.brand span{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-top:7px;color:#d7c9b1}.links{display:flex;gap:30px;align-items:center;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}.links a{opacity:.9}.links a:hover{color:var(--gold)}.nav-cta{border:1px solid var(--gold);padding:11px 18px;color:#fff}.menu{display:none;background:none;border:0;color:#fff;font-size:1.6rem}
 /* HERO */
 .hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;color:#fff;background-image:linear-gradient(90deg,rgba(7,15,11,.72),rgba(7,15,11,.18) 60%,rgba(7,15,11,.4)),url('https://wildhasthi.com/wild-hasthi-luxury-cabin.png');background-size:cover;background-position:center;overflow:hidden}.hero:after{content:"";position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,rgba(0,0,0,.55))}.hero-content{position:relative;z-index:1;width:min(var(--max),calc(100% - 64px));margin:0 auto;padding:0 0 105px}.hero-kicker{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:#ddc9a7;margin-bottom:18px}.hero h1{font:400 clamp(4.2rem,11vw,10rem)/.82 Fraunces,Georgia,serif;margin:0;letter-spacing:-.045em}.hero p{font-size:1.15rem;max-width:520px;margin:30px 0}.hero-actions{display:flex;gap:14px;flex-wrap:wrap}.scroll{position:absolute;z-index:2;right:32px;bottom:42px;writing-mode:vertical-rl;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:#ddd}.scroll:after{content:"";display:block;width:1px;height:55px;background:#fff8;margin:14px auto 0}
 /* INTRO */
@@ -46,11 +54,34 @@ footer{background:#111914;color:#c8cec8;padding:65px 0 25px}.footer-grid{display
 </style>
 </head>
 <body>
-<nav class="nav" id="nav"><div class="nav-inner"><a class="brand" href="#top"><strong>Wild Hasthi</strong><span>Thanamalwila · Sri Lanka</span></a><div class="links"><a href="#stay">Stay</a><a href="#experiences">Experiences</a><a href="#story">The Wild</a><a href="#dining">Dining</a><a href="#gallery">Gallery</a><a href="#book" class="nav-cta">Reserve</a></div><button class="menu" id="menu" aria-label="Open menu">☰</button></div></nav>
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+
+    <a class="brand" href="#top">
+      <img src="wild-has.jpeg" alt="Wild Hasthi" class="brand-logo">
+      <div>
+        <strong>Wild Hasthi</strong>
+        <span>Thanamalwila · Sri Lanka</span>
+      </div>
+    </a>
+
+    <div class="links">
+      <a href="#stay">Stay</a>
+      <a href="#experiences">Experiences</a>
+      <a href="#story">The Wild</a>
+      <a href="#dining">Dining</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#book" class="nav-cta">Reserve</a>
+    </div>
+
+    <button class="menu" id="menu" aria-label="Open menu">☰</button>
+
+  </div>
+</nav>
 <header class="hero" id="top"><div class="hero-content"><div class="hero-kicker">Luxury Safari Retreat · Thanamalwila</div><h1 class="serif">Wild<br>Hasthi</h1><p>Luxury, silence and the rhythm of the wild — a private retreat at the edge of Sri Lanka's great wildlife country.</p><div class="hero-actions"><a class="btn" href="#book">Plan your stay</a><a class="btn" href="#experiences">Explore the wild</a></div></div><div class="scroll">Scroll to discover</div></header>
 <main>
 <section class="section intro" id="stay"><div class="wrap intro-grid reveal"><div><div class="eyebrow">A different kind of escape</div><h2>Where the wild still moves freely.</h2></div><div class="intro-copy"><p>Wild Hasthi is a small, intimate luxury retreat in Thanamalwila, created for guests who want to slow down and experience Sri Lanka beyond the ordinary safari.</p><p>Wake to open skies, follow ancient wildlife paths, return to private comfort and let the landscape set the pace.</p><div class="signature">Stay close. Feel more.</div></div></div></section>
-```html
+
 <section class="section dark-section" id="experiences">
   <div class="wrap">
 
@@ -212,14 +243,13 @@ footer{background:#111914;color:#c8cec8;padding:65px 0 25px}.footer-grid{display
     </div>
   </div>
 </section>
-```
+
 
 <section class="cabin-grid" id="cabin"><div class="cabin-photo reveal" role="img" aria-label="Wild Hasthi luxury safari cabin"></div><div class="cabin-copy reveal"><div class="eyebrow">The cabin</div><h2>One cabin.<br>Nothing ordinary.</h2><p>Designed as a private hideaway, the Wild Hasthi cabin brings the landscape inside through panoramic glass, open views and natural materials — without giving up the comforts of a luxury stay.</p><div class="features"><div class="feature"><b>Panoramic glass</b>Open views into nature</div><div class="feature"><b>Sky-view roof</b>Sleep beneath the stars</div><div class="feature"><b>Private plunge pool</b>Your own quiet water</div><div class="feature"><b>Outdoor rain shower</b>Shower with the forest</div><div class="feature"><b>High-end comfort</b>Thoughtful details throughout</div><div class="feature"><b>Naturalist concierge</b>Personalised wild encounters</div></div><a class="btn dark" href="#book">Enquire for dates</a></div></section>
 <section class="story" id="story"><div class="wrap story-grid reveal"><div><div class="eyebrow">The wild</div><h2>Thanamalwila at the edge of something wild.</h2></div><div><p>There is a particular feeling in Sri Lanka's deep south: wide skies, dry forest, distant calls and roads that seem to disappear into green.</p><p>Wild Hasthi was imagined around that feeling. Not as a resort that sits beside nature, but as a place that lets you notice it — quietly, comfortably and at your own pace.</p><div class="quote">“Come for the safari. Stay for the feeling.”</div></div></div></section>
 <section class="immersive"><div class="wrap reveal"><div class="eyebrow">Your time here</div><h2>Come for the safari.<br>Stay for the feeling.</h2><p>Some journeys are measured in kilometres. Others are measured in moments you remember long after you leave.</p></div></section>
 <section class="section dining" id="dining"><div class="wrap dining-grid reveal"><div><div class="eyebrow">Dining at Wild Hasthi</div><h2>Simple food.<br>Beautifully done.</h2><p>Our dining experience follows the same philosophy as the retreat: fresh ingredients, local character and food that feels generous without being complicated.</p><p>Tell us what you enjoy and we will shape your stay around it — from relaxed breakfasts to private dinners after a day in the wild.</p><div class="note">Menu photography below is a temporary editorial image and can be replaced with your Wild Hasthi food photography later.</div></div><div class="dining-photo"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=85" alt="Beautifully presented dining at a luxury retreat"></div></div></section>
 <section class="gallery" id="gallery"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">Gallery</div><h2>A glimpse of Wild Hasthi.</h2><p>The gallery is ready for your own property photography. Temporary editorial images are used only where the current site does not yet have a matching photograph.</p></div><div class="gallery-grid"><div class="gallery-item g1 reveal"><img src="https://wildhasthi.com/wild-hasthi-luxury-cabin.png" alt="Wild Hasthi cabin"></div><div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1000&q=85" alt="Elephant in Sri Lanka style wildlife setting"></div><div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1473445361085-b9a07f55608b?auto=format&fit=crop&w=1000&q=85" alt="Forest landscape"></div><div class="gallery-item g4 reveal"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85" alt="Nature landscape at golden hour"></div></div></div></section>
-```html
 <section class="book" id="book">
   <div class="wrap book-grid">
 
