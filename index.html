@@ -219,7 +219,218 @@ footer{background:#111914;color:#c8cec8;padding:65px 0 25px}.footer-grid{display
 <section class="immersive"><div class="wrap reveal"><div class="eyebrow">Your time here</div><h2>Come for the safari.<br>Stay for the feeling.</h2><p>Some journeys are measured in kilometres. Others are measured in moments you remember long after you leave.</p></div></section>
 <section class="section dining" id="dining"><div class="wrap dining-grid reveal"><div><div class="eyebrow">Dining at Wild Hasthi</div><h2>Simple food.<br>Beautifully done.</h2><p>Our dining experience follows the same philosophy as the retreat: fresh ingredients, local character and food that feels generous without being complicated.</p><p>Tell us what you enjoy and we will shape your stay around it — from relaxed breakfasts to private dinners after a day in the wild.</p><div class="note">Menu photography below is a temporary editorial image and can be replaced with your Wild Hasthi food photography later.</div></div><div class="dining-photo"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=85" alt="Beautifully presented dining at a luxury retreat"></div></div></section>
 <section class="gallery" id="gallery"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">Gallery</div><h2>A glimpse of Wild Hasthi.</h2><p>The gallery is ready for your own property photography. Temporary editorial images are used only where the current site does not yet have a matching photograph.</p></div><div class="gallery-grid"><div class="gallery-item g1 reveal"><img src="https://wildhasthi.com/wild-hasthi-luxury-cabin.png" alt="Wild Hasthi cabin"></div><div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1000&q=85" alt="Elephant in Sri Lanka style wildlife setting"></div><div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1473445361085-b9a07f55608b?auto=format&fit=crop&w=1000&q=85" alt="Forest landscape"></div><div class="gallery-item g4 reveal"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85" alt="Nature landscape at golden hour"></div></div></div></section>
-<section class="book" id="book"><div class="wrap book-grid"><div class="book-copy reveal"><div class="eyebrow">Reservations</div><h2>Your wild escape starts here.</h2><p>Choose your dates and package. The rate calculator below uses your existing Wild Hasthi pricing structure.</p><div class="contact-box"><strong>Reservations</strong><br>WhatsApp: +94 71 891 2032<br><br>Game drive and Ganga Dige can be arranged as part of your stay.</div></div><form class="form reveal" id="bookingForm" action="https://formspree.io/f/mgaewrpe" method="POST"><h3>Request your stay</h3><div class="form-grid"><div class="field"><label>Full name</label><input name="name" required></div><div class="field"><label>Email address</label><input type="email" name="email" required></div><div class="field"><label>WhatsApp / phone</label><input name="phone" required></div><div class="field"><label>Package</label><select id="package" name="package"><option>Half Board</option><option>All Inclusive</option></select></div><div class="field"><label>Check-in</label><input type="date" id="checkin" name="checkin" required></div><div class="field"><label>Check-out</label><input type="date" id="checkout" name="checkout" required></div><div class="field"><label>Adults</label><select id="adults" name="adults"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option></select></div><div class="field"><label>Children</label><select id="children" name="children"><option value="0">No children</option><option value="1">1 child</option><option value="2">2 children</option></select></div><div class="field" id="age1wrap" style="display:none"><label>Child 1 age</label><select id="age1" name="child_age_1"><option value="3">Under 6</option><option value="6">6–11</option></select></div><div class="field" id="age2wrap" style="display:none"><label>Child 2 age</label><select id="age2" name="child_age_2"><option value="3">Under 6</option><option value="6">6–11</option></select></div><div class="field full"><label>Special requests</label><textarea name="special_requests" placeholder="Dietary needs, safari preferences, celebrations, arrival details..." ></textarea></div></div><div class="rate-box"><span>Estimated nightly rate</span><strong id="rate">USD 330</strong></div><input type="hidden" id="rateHidden" name="rate" value="USD 330"><input type="hidden" name="accommodation" value="1 Private Luxury Cabin"><input type="hidden" name="game_drive" value="Included / arrange with reservation"><input type="hidden" name="source" value="Wild Hasthi website"><div class="form-actions"><button class="btn dark" type="submit">Send reservation request</button><button class="btn whatsapp" type="button" id="wa">WhatsApp us</button></div><div class="small">This is a reservation request, not an instant confirmation. Our team will confirm availability and final details.</div></form></div></section>
+```html
+<section class="book" id="book">
+  <div class="wrap book-grid">
+
+    <div class="book-copy reveal">
+      <div class="eyebrow">Reservations</div>
+
+      <h2>Your wild escape starts here.</h2>
+
+      <p>
+        Choose your dates, package and preferred game drive.
+        Every stay includes one game drive at your selected national park.
+      </p>
+
+      <div class="contact-box">
+        <strong>Reservations</strong><br>
+        WhatsApp: +94 71 891 2032
+        <br><br>
+        One game drive is included with your stay.
+        Choose your preferred safari when making your reservation.
+      </div>
+    </div>
+
+
+    <form class="form reveal"
+          id="bookingForm"
+          action="https://formspree.io/f/mgaewrpe"
+          method="POST">
+
+      <h3>Request your stay</h3>
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Full name</label>
+          <input name="name" required>
+        </div>
+
+
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" name="email" required>
+        </div>
+
+
+        <div class="field">
+          <label>WhatsApp / phone</label>
+          <input name="phone" required>
+        </div>
+
+
+        <div class="field">
+          <label>Package</label>
+          <select id="package" name="package" required>
+            <option value="Half Board">Half Board</option>
+            <option value="All Inclusive">All Inclusive</option>
+          </select>
+        </div>
+
+
+        <!-- GAME DRIVE SELECTION -->
+        <div class="field full">
+          <label>Game Drive / Safari</label>
+
+          <select id="gameDrive" name="game_drive" required>
+            <option value="" disabled selected>
+              Select your preferred safari
+            </option>
+
+            <option value="Yala National Park Safari">
+              Yala National Park Safari
+            </option>
+
+            <option value="Lunugamwehera National Park Safari">
+              Lunugamwehera National Park Safari
+            </option>
+
+            <option value="Udawalawe National Park Safari">
+              Udawalawe National Park Safari
+            </option>
+          </select>
+
+          <div class="small">
+            One game drive is included with your stay.
+          </div>
+        </div>
+
+
+        <div class="field">
+          <label>Check-in</label>
+          <input type="date" id="checkin" name="checkin" required>
+        </div>
+
+
+        <div class="field">
+          <label>Check-out</label>
+          <input type="date" id="checkout" name="checkout" required>
+        </div>
+
+
+        <div class="field">
+          <label>Adults</label>
+
+          <select id="adults" name="adults">
+            <option value="1">1 Adult</option>
+            <option value="2" selected>2 Adults</option>
+            <option value="3">3 Adults</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Children</label>
+
+          <select id="children" name="children">
+            <option value="0">No children</option>
+            <option value="1">1 child</option>
+            <option value="2">2 children</option>
+          </select>
+        </div>
+
+
+        <div class="field"
+             id="age1wrap"
+             style="display:none">
+
+          <label>Child 1 age</label>
+
+          <select id="age1" name="child_age_1">
+            <option value="3">Under 6</option>
+            <option value="6">6–11</option>
+          </select>
+
+        </div>
+
+
+        <div class="field"
+             id="age2wrap"
+             style="display:none">
+
+          <label>Child 2 age</label>
+
+          <select id="age2" name="child_age_2">
+            <option value="3">Under 6</option>
+            <option value="6">6–11</option>
+          </select>
+
+        </div>
+
+
+        <div class="field full">
+          <label>Special requests</label>
+
+          <textarea
+            name="special_requests"
+            placeholder="Dietary needs, safari preferences, celebrations, arrival details..."></textarea>
+        </div>
+
+      </div>
+
+
+      <div class="rate-box">
+        <span>Estimated nightly rate</span>
+        <strong id="rate">USD 330</strong>
+      </div>
+
+
+      <input
+        type="hidden"
+        id="rateHidden"
+        name="rate"
+        value="USD 330">
+
+      <input
+        type="hidden"
+        name="accommodation"
+        value="1 Private Luxury Cabin">
+
+      <input
+        type="hidden"
+        name="source"
+        value="Wild Hasthi website">
+
+
+      <div class="form-actions">
+
+        <button
+          class="btn dark"
+          type="submit">
+          Send reservation request
+        </button>
+
+        <button
+          class="btn whatsapp"
+          type="button"
+          id="wa">
+          WhatsApp us
+        </button>
+
+      </div>
+
+
+      <div class="small">
+        This is a reservation request, not an instant confirmation.
+        Our team will confirm availability and final details.
+      </div>
+
+    </form>
+
+  </div>
+</section>
+
 </main>
 <footer><div class="wrap"><div class="footer-grid"><div><div class="footer-brand">Wild Hasthi</div><p>Luxury safari stays in Thanamalwila, Sri Lanka — created for travellers who want to be close to the wild without compromising on comfort.</p></div><div><h4>Explore</h4><a href="#stay">Stay</a><a href="#experiences">Experiences</a><a href="#story">The Wild</a><a href="#dining">Dining</a><a href="#gallery">Gallery</a></div><div><h4>Reservations</h4><a href="#book">Request a stay</a><a href="https://wa.me/94718912032" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:reservations@wildhasthi.com">reservations@wildhasthi.com</a></div></div><div class="copyright"><span>© 2026 Wild Hasthi. All rights reserved.</span><span>Thanamalwila · Sri Lanka</span></div></div></footer>
 <script>
