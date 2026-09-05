@@ -712,7 +712,104 @@ function calc(){let p=pkg.value,a=+adults.value,c=+children.value,ages=[+age1.va
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
 [pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();
 const today=new Date();const iso=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);document.getElementById('checkin').min=iso;document.getElementById('checkout').min=iso;document.getElementById('checkin').addEventListener('change',e=>{document.getElementById('checkout').min=e.target.value;if(document.getElementById('checkout').value<e.target.value)document.getElementById('checkout').value=e.target.value});
-function bookingText(){let name=document.querySelector('[name=name]').value,email=document.querySelector('[name=email]').value,phone=document.querySelector('[name=phone]').value,ci=document.getElementById('checkin').value,co=document.getElementById('checkout').value,p=pkg.value,a=adults.value,c=children.value,r=document.getElementById('rateHidden').value;let ages='';if(+c>=1)ages+=' Child 1: '+age1.options[age1.selectedIndex].text;if(+c>=2)ages+='; Child 2: '+age2.options[age2.selectedIndex].text;return `Hello Wild Hasthi, I would like to request a reservation.%0A%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0APhone: ${encodeURIComponent(phone)}%0ACheck-in: ${ci}%0ACheck-out: ${co}%0APackage: ${encodeURIComponent(p)}%0AAdults: ${a}%0AChildren: ${c}${encodeURIComponent(ages)}%0AAccommodation: 1 Private Luxury Cabin%0ARate: ${encodeURIComponent(r)} / night%0AGame Drive: Included / arrange with reservation%0AGanga Dige: Included / arrange with reservation`}
+function bookingText() {
+
+  const name =
+    document.querySelector('[name=name]').value;
+
+  const email =
+    document.querySelector('[name=email]').value;
+
+  const phone =
+    document.querySelector('[name=phone]').value;
+
+  const ci =
+    document.getElementById('checkin').value;
+
+  const co =
+    document.getElementById('checkout').value;
+
+  const p =
+    pkg.value;
+
+  const a =
+    adults.value;
+
+  const c =
+    children.value;
+
+  const safari =
+    document.getElementById('gameDrive').value;
+
+  const specialRequests =
+    document.querySelector('[name=special_requests]').value.trim();
+
+  const r =
+    document.getElementById('rateHidden').value;
+
+  let ages = '';
+
+  if (+c >= 1) {
+    ages +=
+      'Child 1: ' +
+      age1.options[age1.selectedIndex].text;
+  }
+
+  if (+c >= 2) {
+    ages +=
+      '; Child 2: ' +
+      age2.options[age2.selectedIndex].text;
+  }
+
+  return (
+    'Hello Wild Hasthi, I would like to request a reservation.' +
+    '%0A%0A' +
+
+    'Name: ' +
+    encodeURIComponent(name) +
+
+    '%0AEmail: ' +
+    encodeURIComponent(email) +
+
+    '%0APhone: ' +
+    encodeURIComponent(phone) +
+
+    '%0ACheck-in: ' +
+    encodeURIComponent(ci) +
+
+    '%0ACheck-out: ' +
+    encodeURIComponent(co) +
+
+    '%0APackage: ' +
+    encodeURIComponent(p) +
+
+    '%0AAdults: ' +
+    encodeURIComponent(a) +
+
+    '%0AChildren: ' +
+    encodeURIComponent(c) +
+
+    '%20' +
+    encodeURIComponent(ages) +
+
+    '%0AAccommodation: ' +
+    encodeURIComponent('1 Private Luxury Cabin') +
+
+    '%0ARate: ' +
+    encodeURIComponent(r) +
+    '%20/night' +
+
+    '%0ASafari / Game Drive: ' +
+    encodeURIComponent(safari) +
+
+    '%0AGanga Dige River Experience: Included' +
+
+    '%0ASpecial Requests: ' +
+    encodeURIComponent(
+      specialRequests || 'None'
+    )
+  );
+}
 document.getElementById('wa').addEventListener('click',()=>window.open('https://wa.me/94718912032?text='+bookingText(),'_blank'));
 document.getElementById('bookingForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Sending...';try{const res=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}});if(res.ok){alert('Thank you. Your Wild Hasthi reservation request has been sent. We will contact you to confirm availability.');f.reset();guestUI()}else throw new Error()}catch(err){alert('We could not send the request right now. Please use WhatsApp to contact reservations.')}finally{btn.disabled=false;btn.textContent='Send reservation request'}});
 </script>
