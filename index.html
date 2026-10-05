@@ -844,10 +844,17 @@ function calc(){
       c=+children.value,
       ages=[+age1.value,+age2.value];
 
-  let r=p==='Half Board'?330:380;
+  // Final published rates include one safari per stay:
+  // 2 adults: HB $420 / AI $470
+  // 3 adults: HB $470 / AI $520
+  // Child 6–11: +$25 HB / +$20 AI
+  // Child 12–17: +$50 HB / +$50 AI
+  // Under 6: no supplement
+
+  let r=p==='Half Board'?420:470;
 
   if(a===3){
-    r=p==='Half Board'?380:430;
+    r=p==='Half Board'?470:520;
   }
   else if(a===2 && c>0){
 
