@@ -439,41 +439,74 @@ A serene journey into the wild.
   </div>
 </section>
 <section class="book" id="book">
+
+  <!-- CHILD POLICY -->
+  <div class="wrap" style="padding-bottom:55px;">
+
+    <div style="max-width:850px;">
+      <div class="eyebrow">Child Policy</div>
+
+      <h3 style="font:400 2.4rem Fraunces,serif;margin:15px 0 15px;color:#fff;">
+        Children are welcome at Wild Hasthi.
+      </h3>
+
+      <p style="color:#bdc5bd;margin:0;font-size:.95rem;">
+        <strong style="color:#fff;">Children 12–17 years:</strong>
+        Full extra-bed charge and full meal charge.<br>
+
+        <strong style="color:#fff;">Children 6–11 years:</strong>
+        Full extra-bed charge and 50% of the applicable meal charge.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- BOOKING AREA -->
   <div class="wrap book-grid">
 
     <div class="book-copy reveal">
 
-  <div class="eyebrow">Request Your Stay</div>
+      <div class="eyebrow">Request Your Stay</div>
 
-  <h2>Your wild escape starts here.</h2>
+      <h2>Your wild escape starts here.</h2>
 
-  <p>
-    Choose your dates, package and preferred game drive.
-    Every stay includes one game drive at your selected national park.
-  </p>
+      <p>
+        Choose your dates, package and preferred game drive.
+        Every stay includes one game drive at your selected national park.
+      </p>
 
-  <div class="contact-box">
-    <strong>Reservations</strong><br><br>
+      <div class="contact-box">
 
-    <strong>WhatsApp / Phone</strong><br>
-    <a href="https://wa.me/94718912032" target="_blank" rel="noopener">
-      +94 71 891 2032
-    </a>
+        <strong>Reservations</strong><br><br>
 
-    <br><br>
+        <strong>WhatsApp / Phone</strong><br>
 
-    <strong>Email</strong><br>
-    <a href="mailto:reservations@wildhasthi.com">
-      reservations@wildhasthi.com
-    </a>
+        <a href="https://wa.me/94718912032"
+           target="_blank"
+           rel="noopener">
+          +94 71 891 2032
+        </a>
 
-    <br><br>
+        <br><br>
 
-    One game drive & Gagadige River experience is included with your stay.
-Choose your preferred safari when making your reservation.
+        <strong>Email</strong><br>
+
+        <a href="mailto:reservations@wildhasthi.com">
+          reservations@wildhasthi.com
+        </a>
+
+        <br><br>
+
+        One game drive & Gagadige River experience is included with your stay.
+        Choose your preferred safari when making your reservation.
+
+      </div>
+
+    </div>
 
 
-</div>
+    <!-- BOOKING FORM -->
     <form class="form reveal"
           id="bookingForm"
           action="https://formspree.io/f/mgaewrpe"
@@ -503,6 +536,7 @@ Choose your preferred safari when making your reservation.
 
         <div class="field">
           <label>Package</label>
+
           <select id="package" name="package" required>
             <option value="Half Board">Half Board</option>
             <option value="All Inclusive">All Inclusive</option>
@@ -512,9 +546,13 @@ Choose your preferred safari when making your reservation.
 
         <!-- GAME DRIVE SELECTION -->
         <div class="field full">
+
           <label>Game Drive / Safari</label>
 
-          <select id="gameDrive" name="game_drive" required>
+          <select id="gameDrive"
+                  name="game_drive"
+                  required>
+
             <option value="" disabled selected>
               Select your preferred safari
             </option>
@@ -530,23 +568,33 @@ Choose your preferred safari when making your reservation.
             <option value="Udawalawe National Park Safari">
               Udawalawe National Park Safari
             </option>
+
           </select>
 
           <div class="small">
             One game drive is included with your stay.
           </div>
+
         </div>
 
 
         <div class="field">
           <label>Check-in</label>
-          <input type="date" id="checkin" name="checkin" required>
+
+          <input type="date"
+                 id="checkin"
+                 name="checkin"
+                 required>
         </div>
 
 
         <div class="field">
           <label>Check-out</label>
-          <input type="date" id="checkout" name="checkout" required>
+
+          <input type="date"
+                 id="checkout"
+                 name="checkout"
+                 required>
         </div>
 
 
@@ -554,9 +602,19 @@ Choose your preferred safari when making your reservation.
           <label>Adults</label>
 
           <select id="adults" name="adults">
-            <option value="1">1 Adult</option>
-            <option value="2" selected>2 Adults</option>
-            <option value="3">3 Adults</option>
+
+            <option value="1">
+              1 Adult
+            </option>
+
+            <option value="2" selected>
+              2 Adults
+            </option>
+
+            <option value="3">
+              3 Adults
+            </option>
+
           </select>
         </div>
 
@@ -565,9 +623,19 @@ Choose your preferred safari when making your reservation.
           <label>Children</label>
 
           <select id="children" name="children">
-            <option value="0">No children</option>
-            <option value="1">1 child</option>
-            <option value="2">2 children</option>
+
+            <option value="0">
+              No children
+            </option>
+
+            <option value="1">
+              1 child
+            </option>
+
+            <option value="2">
+              2 children
+            </option>
+
           </select>
         </div>
 
@@ -578,9 +646,17 @@ Choose your preferred safari when making your reservation.
 
           <label>Child 1 age</label>
 
-          <select id="age1" name="child_age_1">
-            <option value="3">Under 6</option>
-            <option value="6">6–11</option>
+          <select id="age1"
+                  name="child_age_1">
+
+            <option value="3">
+              Under 6
+            </option>
+
+            <option value="6">
+              6–11
+            </option>
+
           </select>
 
         </div>
@@ -592,28 +668,46 @@ Choose your preferred safari when making your reservation.
 
           <label>Child 2 age</label>
 
-          <select id="age2" name="child_age_2">
-            <option value="3">Under 6</option>
-            <option value="6">6–11</option>
+          <select id="age2"
+                  name="child_age_2">
+
+            <option value="3">
+              Under 6
+            </option>
+
+            <option value="6">
+              6–11
+            </option>
+
           </select>
 
         </div>
 
 
         <div class="field full">
+
           <label>Special requests</label>
 
           <textarea
             name="special_requests"
             placeholder="Dietary needs, safari preferences, celebrations, arrival details..."></textarea>
+
         </div>
 
       </div>
 
 
+      <!-- RATE -->
       <div class="rate-box">
-        <span>Estimated nightly rate</span>
-        <strong id="rate">USD 330</strong>
+
+        <span>
+          Estimated nightly rate
+        </span>
+
+        <strong id="rate">
+          USD 330
+        </strong>
+
       </div>
 
 
@@ -623,10 +717,12 @@ Choose your preferred safari when making your reservation.
         name="rate"
         value="USD 330">
 
+
       <input
         type="hidden"
         name="accommodation"
         value="1 Private Luxury Cabin">
+
 
       <input
         type="hidden"
@@ -634,48 +730,42 @@ Choose your preferred safari when making your reservation.
         value="Wild Hasthi website">
 
 
+      <!-- BUTTONS -->
       <div class="form-actions">
 
         <button
           class="btn dark"
           type="submit">
+
           Send reservation request
+
         </button>
+
 
         <button
           class="btn whatsapp"
           type="button"
           id="wa">
+
           WhatsApp us
+
         </button>
 
       </div>
 
 
       <div class="small">
+
         This is a reservation request, not an instant confirmation.
         Our team will confirm availability and final details.
+
       </div>
 
-        </form>
+    </form>
 
-  </div>
-
-  <div class="wrap" style="margin-top:50px;">
-    <div style="border-top:1px solid #ffffff22;padding-top:25px;">
-      <strong style="color:#c5a880;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;">
-        Child Policy
-      </strong>
-
-      <p style="color:#bdc5bd;margin:12px 0 0;font-size:.9rem;">
-        Children 12–17 years: full extra-bed charge and full meal charge.<br>
-        Children 6–11 years: full extra-bed charge and 50% of the applicable meal charge.
-      </p>
-    </div>
   </div>
 
 </section>
-
 </main>
 <footer>
   <div class="wrap">
