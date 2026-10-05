@@ -133,6 +133,7 @@ footer{background:#111914;color:#c8cec8;padding:65px 0 25px}.footer-grid{display
 }
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <nav class="nav" id="nav">
@@ -979,6 +980,100 @@ function bookingText() {
   );
 }
 document.getElementById('wa').addEventListener('click',()=>window.open('https://wa.me/94718912032?text='+bookingText(),'_blank'));
-document.getElementById('bookingForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Sending...';try{const res=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}});if(res.ok){alert('Thank you. Your Wild Hasthi reservation request has been sent. We will contact you to confirm availability.');f.reset();guestUI()}else throw new Error()}catch(err){alert('We could not send the request right now. Please use WhatsApp to contact reservations.')}finally{btn.disabled=false;btn.textContent='Send reservation request'}});
+const SUPABASE_URL='https://gpghedyiowenwxraklnu.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_jPdKMU6_yoXtdqkSiYAdXw_QvJryHyR';
+const H003_PROPERTY_ID='89fbb04a-1a9f-459e-b9b0-b0321638575e';
+const availabilityClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const availabilityButton=document.querySelector('#bookingForm button[type="submit"]');
+const checkinAvailability=document.getElementById('checkin');
+const checkoutAvailability=document.getElementById('checkout');
+const availabilityNote=document.createElement('div');
+availabilityNote.id='availabilityNote';
+availabilityNote.style.cssText='margin-top:10px;font-size:.85rem;line-height:1.5;font-weight:500;';
+const rateBox=document.querySelector('.rate-box');
+if(rateBox) rateBox.insertAdjacentElement('afterend',availabilityNote);
+
+async function checkWildHasthiAvailability(){
+  const checkIn=checkinAvailability.value;
+  const checkOut=checkoutAvailability.value;
+  if(!checkIn || !checkOut || checkOut<=checkIn){
+    availabilityNote.textContent='Select valid check-in and check-out dates to check availability.';
+    availabilityNote.style.color='#737a73';
+    availabilityButton.disabled=true;
+    availabilityButton.textContent='Select dates';
+    return false;
+  }
+
+  availabilityNote.textContent='Checking cabin availability…';
+  availabilityNote.style.color='#737a73';
+  availabilityButton.disabled=true;
+  availabilityButton.textContent='Checking availability…';
+
+  try{
+    const {data,error}=await availabilityClient
+      .from('reservations')
+      .select('status,reservation_data,active')
+      .eq('property_id',H003_PROPERTY_ID);
+
+    if(error) throw error;
+
+    const blocked=(data||[]).some(row=>{
+      if(row.active===false) return false;
+      const status=String(row.status||row.reservation_data?.status||'').trim().toLowerCase();
+      if(status!=='reserved' && status!=='checked-in') return false;
+      const existingIn=row.reservation_data?.checkIn;
+      const existingOut=row.reservation_data?.checkOut;
+      if(!existingIn || !existingOut) return false;
+      return existingIn < checkOut && existingOut > checkIn;
+    });
+
+    if(blocked){
+      availabilityNote.textContent='Sold Out — the private luxury cabin is not available for these dates.';
+      availabilityNote.style.color='#a33a2b';
+      availabilityButton.disabled=true;
+      availabilityButton.textContent='Sold Out';
+      return false;
+    }
+
+    availabilityNote.textContent='Available — the private luxury cabin is available for these dates.';
+    availabilityNote.style.color='#36583b';
+    availabilityButton.disabled=false;
+    availabilityButton.textContent='Send reservation request';
+    return true;
+  }catch(err){
+    console.error('Wild Hasthi availability check failed:',err);
+    availabilityNote.textContent='Availability could not be checked. Please contact reservations on WhatsApp.';
+    availabilityNote.style.color='#a33a2b';
+    availabilityButton.disabled=true;
+    availabilityButton.textContent='Check availability';
+    return false;
+  }
+}
+
+[checkinAvailability,checkoutAvailability].forEach(el=>el.addEventListener('change',checkWildHasthiAvailability));
+checkWildHasthiAvailability();
+
+document.getElementById('bookingForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=e.currentTarget;
+  const btn=f.querySelector('button[type=submit]');
+  const stillAvailable=await checkWildHasthiAvailability();
+  if(!stillAvailable) return;
+  btn.disabled=true;
+  btn.textContent='Sending...';
+  try{
+    const res=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}});
+    if(res.ok){
+      alert('Thank you. Your Wild Hasthi reservation request has been sent. We will contact you to confirm availability.');
+      f.reset();
+      guestUI();
+      checkWildHasthiAvailability();
+    }else throw new Error();
+  }catch(err){
+    alert('We could not send the request right now. Please use WhatsApp to contact reservations.');
+    btn.disabled=false;
+    btn.textContent='Send reservation request';
+  }
+});
 </script>
 </body></html>
