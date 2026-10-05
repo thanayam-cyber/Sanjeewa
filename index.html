@@ -830,7 +830,38 @@ menu.addEventListener('click',()=>nav.classList.toggle('open'));
 document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
 const pkg=document.getElementById('package'),adults=document.getElementById('adults'),children=document.getElementById('children'),age1=document.getElementById('age1'),age2=document.getElementById('age2');
-function calc(){let p=pkg.value,a=+adults.value,c=+children.value,ages=[+age1.value,+age2.value];let r=0;if(a===3){r=p==='Half Board'?380:430}else if(a===2&&c===0){r=p==='Half Board'?330:380}else if(a===1&&c===0){r=p==='Half Board'?330:380}else if(a===2&&c===1){r=p==='Half Board'?(ages[0]>=6?355:330):(ages[0]>=6?400:380)}else if(a===2&&c===2){let school=ages[0]>=6&&ages[1]>=6;r=p==='Half Board'?(school?380:ages[0]>=6||ages[1]>=6?355:330):(school?430:ages[0]>=6||ages[1]>=6?400:380)}else{r=p==='Half Board'?330:380}document.getElementById('rate').textContent='USD '+r;document.getElementById('rateHidden').value='USD '+r}
+function calc(){
+  let p=pkg.value,
+      a=+adults.value,
+      c=+children.value,
+      ages=[+age1.value,+age2.value];
+
+  let r=p==='Half Board'?330:380;
+
+  if(a===3){
+    r=p==='Half Board'?380:430;
+  }
+  else if(a===2 && c>0){
+
+    let supplements=0;
+
+    for(let i=0;i<c;i++){
+
+      if(ages[i]>=12){
+        supplements += p==='Half Board'?50:50;
+      }
+      else if(ages[i]>=6){
+        supplements += p==='Half Board'?25:20;
+      }
+
+    }
+
+    r += supplements;
+  }
+
+  document.getElementById('rate').textContent='USD '+r;
+  document.getElementById('rateHidden').value='USD '+r;
+}
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
 [pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();
 const today=new Date();const iso=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);document.getElementById('checkin').min=iso;document.getElementById('checkout').min=iso;document.getElementById('checkin').addEventListener('change',e=>{document.getElementById('checkout').min=e.target.value;if(document.getElementById('checkout').value<e.target.value)document.getElementById('checkout').value=e.target.value});
