@@ -435,6 +435,26 @@ css
     height: 220px;
   }
 }
+  /* Tablet */
+@media (max-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .gallery-grid .gallery-item,
+  .gallery-grid .gallery-item.g1,
+  .gallery-grid .gallery-item.g4 {
+    height: 240px;
+  }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
