@@ -413,29 +413,37 @@ css
     display: none;
   }
 }
+
 /* WILD HASTHI GALLERY - UNIFORM PHOTO SIZES */
-.gallery img {
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.gallery-grid .gallery-item,
+.gallery-grid .gallery-item.g1,
+.gallery-grid .gallery-item.g4 {
   width: 100%;
   height: 280px;
+  min-height: 0;
+  grid-column: auto;
+  grid-row: auto;
+  overflow: hidden;
+  display: block;
+}
+
+.gallery-grid .gallery-item img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   border-radius: 4px;
 }
 
-/* Keep gallery items aligned */
-.gallery a,
-.gallery-item {
-  display: block;
-  overflow: hidden;
-}
-
-/* Mobile screen */
-@media (max-width: 600px) {
-  .gallery img {
-    height: 220px;
-  }
-}
-  /* Tablet */
+/* Tablet */
 @media (max-width: 900px) {
   .gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -456,6 +464,7 @@ css
   }
 }
 </style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
