@@ -318,6 +318,56 @@ css
     padding: 27px 24px;
   }
 }
+/* MAKE GUEST TRUST NOTE CLEAR */
+.trust-note {
+  background: #f8f5ed;
+  padding: 28px 24px;
+  border-radius: 4px;
+  max-width: 850px;
+  margin: 35px auto 0;
+  color: #000000 !important;
+}
+
+.trust-note p {
+  color: #000000 !important;
+  line-height: 1.8;
+}
+
+/* BLACK BOOKING BUTTONS */
+.trust-actions .btn,
+.trust-actions .btn.dark {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  text-decoration: none;
+}
+
+.trust-actions .btn:hover,
+.trust-actions .btn.dark:hover {
+  background: #252525 !important;
+  color: #ffffff !important;
+  border-color: #252525 !important;
+}
+
+@media (max-width: 560px) {
+  .trust-note {
+    padding: 24px 18px;
+  }
+
+  .trust-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .trust-actions .btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
