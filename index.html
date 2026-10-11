@@ -1515,49 +1515,20 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
   });
 })();
 </script>
-/* FLOATING WHATSAPP BOOKING BUTTON */
-.whatsapp-float {
-  position: fixed;
-  right: 22px;
-  bottom: 24px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 19px;
-  background: #25D366;
-  color: #ffffff !important;
-  border-radius: 50px;
-  text-decoration: none !important;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.22);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.whatsapp-float:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
-}
-
-.whatsapp-float svg {
-  width: 25px;
-  height: 25px;
-  flex-shrink: 0;
-}
-
-@media (max-width: 560px) {
-  .whatsapp-float {
-    right: 15px;
-    bottom: 18px;
-    padding: 13px;
-  }
-
-  .whatsapp-float .whatsapp-label {
-    display: none;
-  }
-}
+<!-- FLOATING WHATSAPP BOOKING BUTTON -->
+<a
+  class="whatsapp-float"
+  href="https://wa.me/94718912032?text=Hello%20Wild%20Hasthi%2C%20I%20would%20like%20to%20enquire%20about%20a%20booking."
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Book your Wild Hasthi stay on WhatsApp"
+>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.52 3.48A11.83 11.83 0 0 0 12.1 0C5.55 0 .21 5.34.21 11.9c0 2.1.55 4.16 1.6 5.98L.1 24l6.28-1.65a11.9 11.9 0 0 0 5.71 1.46h.01C18.66 23.81 24 18.47 24 11.91a11.83 11.83 0 0 0-3.48-8.43Z"/>
+  </svg>
+  <span class="whatsapp-label">Book Your Stay</span>
+</a>
+<!-- END FLOATING WHATSAPP BOOKING BUTTON -->
 </body>
 </html>
 
