@@ -463,6 +463,22 @@ css
     height: 240px;
   }
 }
+
+/* Foreign guest package rates */
+.rates-section{background:var(--paper);padding:95px 0;color:var(--green)}
+.rates-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:35px}
+.rate-card{border:1px solid var(--line);padding:25px;background:var(--cream)}
+.rate-card.featured{background:var(--green);color:var(--cream)}
+.rate-card .rate-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.78}
+.rate-card h3{font:400 1.55rem Fraunces,Georgia,serif;margin:12px 0 8px}
+.rate-card .rate-number{font:500 1.45rem Fraunces,Georgia,serif;margin:10px 0;line-height:1.4}
+.rate-card p{font-size:.9rem;line-height:1.65;opacity:.85}
+.rate-table-wrap{overflow-x:auto;margin-top:28px}
+.rate-table{width:100%;border-collapse:collapse;background:var(--cream)}
+.rate-table th,.rate-table td{padding:14px 16px;border-bottom:1px solid var(--line);text-align:left}
+.rate-table th{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:#ded2bd}
+.rate-policy{margin-top:22px;max-width:950px;font-size:.9rem;line-height:1.75}
+@media(max-width:760px){.rates-grid{grid-template-columns:1fr}.rates-section{padding:65px 0}.rate-table th,.rate-table td{padding:11px 12px}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -481,6 +497,7 @@ css
 
     <div class="links">
       <a href="#stay">Stay</a>
+      <a href="#rates">Rates</a>
       <a href="#experiences">Experiences</a>
       <a href="#story">The Wild</a>
       <a href="#dining">Dining</a>
@@ -820,6 +837,43 @@ A serene journey into the wild.
 
   </div>
 </section>
+<section class="rates-section" id="rates">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Foreign Guest Packages</div>
+      <h2>Stay, dine &amp; explore the wild.</h2>
+      <p>Recommended package rates per cabin, per night. Both packages include one safari experience, the safari jeep and applicable safari tickets.</p>
+    </div>
+    <div class="rates-grid">
+      <article class="rate-card reveal">
+        <div class="rate-label">Half Board + Safari</div><h3>Double</h3><p>2 adults</p>
+        <div class="rate-number">LKR 138,000</div>
+        <p>Accommodation, half-board meals and one included safari experience.</p>
+      </article>
+      <article class="rate-card reveal">
+        <div class="rate-label">Half Board + Safari</div><h3>Triple</h3><p>3 adults</p>
+        <div class="rate-number">LKR 155,000</div>
+        <p>Accommodation, half-board meals and one included safari experience.</p>
+      </article>
+      <article class="rate-card featured reveal">
+        <div class="rate-label">All Inclusive + Safari</div><h3>Double / Triple</h3><p>2 adults / 3 adults</p>
+        <div class="rate-number">LKR 158,000 / LKR 185,000</div>
+        <p>Accommodation, all-inclusive meals and included beverages as confirmed by the property, plus one safari experience.</p>
+      </article>
+    </div>
+    <div class="rate-table-wrap">
+      <table class="rate-table">
+        <thead><tr><th>Package</th><th>Occupancy</th><th>Rate per night</th></tr></thead>
+        <tbody>
+          <tr><td>Half Board + Safari</td><td>Family: 2 adults + up to 2 children, one extra bed</td><td><strong>LKR 165,000</strong></td></tr>
+          <tr><td>All Inclusive + Safari</td><td>Family: 2 adults + up to 2 children, one extra bed</td><td><strong>LKR 195,000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="rate-policy"><strong>Children's policy:</strong> Children aged 12–17 are charged the full extra-bed charge and full meal charge. Children aged 6–11 are charged the full extra-bed charge and 50% of the applicable meal charge. One extra bed is provided for a family booking; the second child shares existing bedding. Safari is included in the package. Children under 6 and final family pricing will be confirmed by reservations based on the children's ages and meal requirements.</div>
+  </div>
+</section>
+
 <section class="gallery" id="gallery">
   <div class="wrap">
 
@@ -899,8 +953,7 @@ A serene journey into the wild.
       <h2>Your wild escape starts here.</h2>
 
       <p>
-        Choose your dates, package and preferred game drive.
-        Every stay includes one game drive at your selected national park.
+        Choose your dates and package. Half Board and All Inclusive packages both include one safari experience, the jeep and applicable safari tickets.
       </p>
 
       <div class="contact-box">
@@ -965,8 +1018,8 @@ A serene journey into the wild.
           <label>Package</label>
 
           <select id="package" name="package" required>
-            <option value="Half Board">Half Board</option>
-            <option value="All Inclusive">All Inclusive</option>
+            <option value="Half Board">Half Board + Safari</option>
+            <option value="All Inclusive">All Inclusive + Safari</option>
           </select>
         </div>
 
@@ -1136,11 +1189,11 @@ A serene journey into the wild.
       <div class="rate-box">
 
         <span>
-          Estimated nightly rate
+          Estimated nightly package rate
         </span>
 
         <strong id="rate">
-          USD 420
+          LKR 138,000
         </strong>
 
       </div>
@@ -1150,7 +1203,7 @@ A serene journey into the wild.
         type="hidden"
         id="rateHidden"
         name="rate"
-        value="USD 420">
+        value="LKR 138,000 per night">
 
 
       <input
@@ -1266,43 +1319,22 @@ document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
 const pkg=document.getElementById('package'),adults=document.getElementById('adults'),children=document.getElementById('children'),age1=document.getElementById('age1'),age2=document.getElementById('age2');
 function calc(){
-  let p=pkg.value,
-      a=+adults.value,
-      c=+children.value,
-      ages=[+age1.value,+age2.value];
-
-  // Final published rates include one safari per stay:
-  // 2 adults: HB $420 / AI $470
-  // 3 adults: HB $470 / AI $520
-  // Child 6–11: +$25 HB / +$20 AI
-  // Child 12–17: +$50 HB / +$50 AI
-  // Under 6: no supplement
-
-  let r=p==='Half Board'?420:470;
-
+  const p=pkg.value;
+  const a=+adults.value;
+  const c=+children.value;
+  let r;
   if(a===3){
-    r=p==='Half Board'?470:520;
+    r=p==='Half Board'?155000:185000;
+  }else if(c>0){
+    // Family estimate: two adults, up to two children, one extra bed.
+    // Reservations confirms the final child supplement based on age and meal requirements.
+    r=p==='Half Board'?165000:195000;
+  }else{
+    r=p==='Half Board'?138000:158000;
   }
-  else if(a===2 && c>0){
-
-    let supplements=0;
-
-    for(let i=0;i<c;i++){
-
-      if(ages[i]>=12){
-        supplements += p==='Half Board'?50:50;
-      }
-      else if(ages[i]>=6){
-        supplements += p==='Half Board'?25:20;
-      }
-
-    }
-
-    r += supplements;
-  }
-
-  document.getElementById('rate').textContent='USD '+r;
-  document.getElementById('rateHidden').value='USD '+r;
+  const formatted='LKR '+r.toLocaleString('en-LK');
+  document.getElementById('rate').textContent=formatted;
+  document.getElementById('rateHidden').value=formatted+' per night';
 }
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
 [pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();
