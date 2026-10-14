@@ -843,21 +843,28 @@ A serene journey into the wild.
       <div class="eyebrow">Foreign Guest Packages</div>
       <h2>Stay, dine &amp; explore the wild.</h2>
       <p>Recommended package rates per cabin, per night. Both packages include one safari experience, the safari jeep and applicable safari tickets.</p>
+      <div class="currency-picker" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px auto 8px;">
+        <label for="currencySelect" style="font-weight:600;">Display prices in</label>
+        <select id="currencySelect" aria-label="Choose display currency" style="padding:10px 14px;border:1px solid #b9b09f;border-radius:6px;background:#fff;color:#222;font:inherit;min-width:170px;">
+          <option value="AUTO">Detect my country</option><option value="SAR">SAR — Saudi Riyal</option><option value="USD">USD — US Dollar</option><option value="LKR">LKR — Sri Lankan Rupee</option>
+        </select>
+        <small id="currencyNote" style="display:block;max-width:300px;color:#777;">Prices are estimates in your selected currency. Final payment currency is confirmed by reservations.</small>
+      </div>
     </div>
     <div class="rates-grid">
       <article class="rate-card reveal">
         <div class="rate-label">Half Board + Safari</div><h3>Double</h3><p>2 adults</p>
-        <div class="rate-number">LKR 138,000</div>
+        <div class="rate-number" data-rate-lkr="138000">LKR 138,000</div>
         <p>Accommodation, half-board meals and one included safari experience.</p>
       </article>
       <article class="rate-card reveal">
         <div class="rate-label">Half Board + Safari</div><h3>Triple</h3><p>3 adults</p>
-        <div class="rate-number">LKR 155,000</div>
+        <div class="rate-number" data-rate-lkr="155000">LKR 155,000</div>
         <p>Accommodation, half-board meals and one included safari experience.</p>
       </article>
       <article class="rate-card featured reveal">
         <div class="rate-label">All Inclusive + Safari</div><h3>Double / Triple</h3><p>2 adults / 3 adults</p>
-        <div class="rate-number">LKR 158,000 / LKR 185,000</div>
+        <div class="rate-number"><span data-rate-lkr="158000">LKR 158,000</span> / <span data-rate-lkr="185000">LKR 185,000</span></div>
         <p>Accommodation, all-inclusive meals and included beverages as confirmed by the property, plus one safari experience.</p>
       </article>
     </div>
@@ -865,12 +872,12 @@ A serene journey into the wild.
       <table class="rate-table">
         <thead><tr><th>Package</th><th>Occupancy</th><th>Rate per night</th></tr></thead>
         <tbody>
-          <tr><td>Half Board + Safari</td><td>Family: 2 adults + up to 2 children, one extra bed</td><td><strong>LKR 165,000</strong></td></tr>
-          <tr><td>All Inclusive + Safari</td><td>Family: 2 adults + up to 2 children, one extra bed</td><td><strong>LKR 195,000</strong></td></tr>
+          <tr><td>Child supplement</td><td>Child aged 6–11</td><td><strong data-rate-lkr="14500">LKR 14,500 per child</strong></td></tr>
+          <tr><td>Child supplement</td><td>Child aged 12–17</td><td><strong data-rate-lkr="29000">LKR 29,000 per child</strong></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="rate-policy"><strong>Children's policy:</strong> Children aged 12–17 are charged the full extra-bed charge and full meal charge. Children aged 6–11 are charged the full extra-bed charge and 50% of the applicable meal charge. One extra bed is provided for a family booking; the second child shares existing bedding. Safari is included in the package. Children under 6 and final family pricing will be confirmed by reservations based on the children's ages and meal requirements.</div>
+    <div class="rate-policy"><strong>Children's policy:</strong> The estimated supplement is LKR 29,000 per child aged 12–17 and LKR 14,500 per child aged 6–11. These supplements include the child package components, including safari, meals and bedding as applicable. Safari is already included in the adult package rate and is not charged twice. Children under 6 require confirmation from reservations; the calculator shows the adult package rate until the property confirms any applicable supplement. One extra bed is available for a family booking; bedding arrangements for a second child will be confirmed by reservations.</div>
   </div>
 </section>
 
@@ -1318,26 +1325,71 @@ menu.addEventListener('click',()=>nav.classList.toggle('open'));
 document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
 const pkg=document.getElementById('package'),adults=document.getElementById('adults'),children=document.getElementById('children'),age1=document.getElementById('age1'),age2=document.getElementById('age2');
+let displayCurrency='USD';
+let fxFromLKR={LKR:1,USD:1/310,SAR:1/87.6};
+const currencySelect=document.getElementById('currencySelect');
+const currencyNote=document.getElementById('currencyNote');
+function moneyFromLKR(amount){
+  const rate=fxFromLKR[displayCurrency]||1;
+  let value=amount*rate;
+  if(displayCurrency==='LKR') value=Math.round(value);
+  else if(displayCurrency==='SAR') value=Math.round(value/5)*5;
+  else value=Math.round(value);
+  const symbol={LKR:'LKR ',SAR:'SAR ',USD:'USD '}[displayCurrency]||displayCurrency+' ';
+  return symbol+value.toLocaleString(displayCurrency==='LKR'?'en-LK':'en-US',{maximumFractionDigits:0});
+}
+function updateAllPrices(){
+  document.querySelectorAll('[data-rate-lkr]').forEach(el=>{el.textContent=moneyFromLKR(Number(el.dataset.rateLkr));});
+  calc();
+}
+async function setCurrencyFromCountry(){
+  let detected='USD';
+  try{
+    const geo=await fetch('https://ipapi.co/json/',{cache:'no-store'});
+    if(geo.ok){const data=await geo.json();if(data.country_code==='LK')detected='LKR';else if(data.country_code==='SA')detected='SAR';}
+  }catch(e){}
+  try{
+    const fx=await fetch('https://open.er-api.com/v6/latest/LKR',{cache:'no-store'});
+    if(fx.ok){const data=await fx.json();if(data.result==='success'&&data.rates){fxFromLKR={LKR:1,USD:Number(data.rates.USD)||fxFromLKR.USD,SAR:Number(data.rates.SAR)||fxFromLKR.SAR};}}
+  }catch(e){currencyNote.textContent='Using indicative exchange rates. Final payment currency is confirmed by reservations.';}
+  if(currencySelect.value==='AUTO'){
+    displayCurrency=detected;
+    currencyNote.textContent='Currency detected from your country. Converted prices are estimates; final payment currency is confirmed by reservations.';
+  }
+  updateAllPrices();
+}
+currencySelect.addEventListener('change',()=>{
+  displayCurrency=currencySelect.value==='AUTO'?'USD':currencySelect.value;
+  if(currencySelect.value==='AUTO'){setCurrencyFromCountry();return;}
+  currencyNote.textContent='Prices converted from the official LKR package rates. Final payment currency is confirmed by reservations.';
+  updateAllPrices();
+});
 function calc(){
   const p=pkg.value;
   const a=+adults.value;
   const c=+children.value;
-  let r;
-  if(a===3){
-    r=p==='Half Board'?155000:185000;
-  }else if(c>0){
-    // Family estimate: two adults, up to two children, one extra bed.
-    // Reservations confirms the final child supplement based on age and meal requirements.
-    r=p==='Half Board'?165000:195000;
-  }else{
-    r=p==='Half Board'?138000:158000;
+  // Published base package rates are for two adults; triple rates apply to three adults.
+  let r=(a===3)?(p==='Half Board'?155000:185000):(p==='Half Board'?138000:158000);
+  let childSupplement=0;
+  let underSixNeedsConfirmation=false;
+  for(let i=0;i<c;i++){
+    const age=+(i===0?age1.value:age2.value);
+    if(age>=12) childSupplement+=29000;
+    else if(age>=6) childSupplement+=14500;
+    else underSixNeedsConfirmation=true;
   }
-  const formatted='LKR '+r.toLocaleString('en-LK');
-  document.getElementById('rate').textContent=formatted;
-  document.getElementById('rateHidden').value=formatted+' per night';
+  r+=childSupplement;
+  const formatted=moneyFromLKR(r);
+  document.getElementById('rate').textContent=formatted+(underSixNeedsConfirmation?'*':'');
+  let detail=formatted+' per night (base package LKR '+((a===3)?(p==='Half Board'?155000:185000):(p==='Half Board'?138000:158000)).toLocaleString('en-LK')+'; child supplements LKR '+childSupplement.toLocaleString('en-LK')+')';
+  if(underSixNeedsConfirmation) detail+='; child under 6 supplement pending reservations confirmation';
+  document.getElementById('rateHidden').value=detail;
+  let note=document.getElementById('childRateNote');
+  if(!note){note=document.createElement('div');note.id='childRateNote';note.className='small';document.querySelector('.rate-box').insertAdjacentElement('afterend',note);}
+  note.textContent=underSixNeedsConfirmation?'*Estimated rate excludes any supplement for a child under 6. Please confirm with reservations.':'Child supplements are included in this estimate; final rate is confirmed by reservations.';
 }
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
-[pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();
+[pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();setCurrencyFromCountry();
 const today=new Date();const iso=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);document.getElementById('checkin').min=iso;document.getElementById('checkout').min=iso;document.getElementById('checkin').addEventListener('change',e=>{document.getElementById('checkout').min=e.target.value;if(document.getElementById('checkout').value<e.target.value)document.getElementById('checkout').value=e.target.value});
 function bookingText() {
 
