@@ -1324,7 +1324,34 @@ window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50)
 menu.addEventListener('click',()=>nav.classList.toggle('open'));
 document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
-const pkg=document.getElementById('package'),adults=document.getElementById('adults'),children=document.getElementById('children'),age1=document.getElementById('age1'),age2=document.getElementById('age2');
+/* WILD HASTHI RATE SETTINGS — EDIT RATES HERE */
+const WH_RATES = {
+  hb: {
+    double: 75000,
+    triple: 90000,
+    child12: 15000,
+    child6to11: 7500
+  },
+  hbSafari: {
+    double: 129000,
+    triple: 158000,
+    child12: 29000,
+    child6to11: 14500
+  },
+  allInclusive: {
+    double: 158000,
+    triple: 185000,
+    child12: 29000,
+    child6to11: 14500
+  },
+  discountPercent: 5,
+  safari: {
+    firstTwoAdults: 24000,
+    thirdAdult: 14000,
+    jeep: 30000
+  }
+};
+  const pkg=document.getElementById('package'),adults=document.getElementById('adults'),children=document.getElementById('children'),age1=document.getElementById('age1'),age2=document.getElementById('age2');
 let displayCurrency='USD';
 let fxFromLKR={LKR:1,USD:1/310,SAR:1/87.6};
 const currencySelect=document.getElementById('currencySelect');
@@ -1364,49 +1391,105 @@ currencySelect.addEventListener('change',()=>{
   currencyNote.textContent='Prices converted from the official LKR package rates. Final payment currency is confirmed by reservations.';
   updateAllPrices();
 });
-function calc(){
-  const p=pkg.value;
-  const a=+adults.value;
-  const c=+children.value;
-  let baseRate=0;
-  let safariCost=0;
-  let childSupplement=0;
-  let underSixNeedsConfirmation=false;
 
-  if(p==='Half Board'){
-    // HB rates exclude safari: double LKR 75,000; triple LKR 90,000.
-    baseRate=(a===3)?90000:75000;
-    // Safari tickets: first two adults together LKR 24,000; third adult LKR 14,000.
-    safariCost=(a>=2?24000:14000)+(a===3?14000:0)+30000; // one jeep per booking: LKR 30,000
-    for(let i=0;i<c;i++){
-      const age=+(i===0?age1.value:age2.value);
-      if(age>=12) childSupplement+=29000; // LKR 15,000 HB + LKR 14,000 safari ticket
-      else if(age>=6) childSupplement+=14500; // half of LKR 29,000 child supplement
-      else underSixNeedsConfirmation=true;
+function calc(){
+  const p = pkg.value;
+  const a = +adults.value;
+  const c = +children.value;
+
+  let baseRate = 0;
+  let safariCost = 0;
+  let childSupplement = 0;
+  let underSixNeedsConfirmation = false;
+
+  if(p === 'Half Board'){
+    // HB accommodation rates — edit in WH_RATES above.
+    baseRate = (a === 3)
+      ? WH_RATES.hb.triple
+      : WH_RATES.hb.double;
+
+    // Safari tickets and one jeep per booking.
+    safariCost =
+      (a >= 2
+        ? WH_RATES.safari.firstTwoAdults
+        : WH_RATES.safari.firstTwoAdults / 2)
+      + (a === 3 ? WH_RATES.safari.thirdAdult : 0)
+      + WH_RATES.safari.jeep;
+
+    for(let i = 0; i < c; i++){
+      const age = +(i === 0 ? age1.value : age2.value);
+
+      if(age >= 12){
+        childSupplement += WH_RATES.hb.child12;
+      } else if(age >= 6){
+        childSupplement += WH_RATES.hb.child6to11;
+      } else {
+        underSixNeedsConfirmation = true;
+      }
     }
   } else {
-    // Existing All Inclusive rates already include one safari and jeep.
-    baseRate=(a===3)?185000:158000;
-    for(let i=0;i<c;i++){
-      const age=+(i===0?age1.value:age2.value);
-      if(age>=12) childSupplement+=29000;
-      else if(age>=6) childSupplement+=14500;
-      else underSixNeedsConfirmation=true;
+    // All Inclusive adult package includes safari and jeep.
+    baseRate = (a === 3)
+      ? WH_RATES.allInclusive.triple
+      : WH_RATES.allInclusive.double;
+
+    for(let i = 0; i < c; i++){
+      const age = +(i === 0 ? age1.value : age2.value);
+
+      if(age >= 12){
+        childSupplement += WH_RATES.allInclusive.child12;
+      } else if(age >= 6){
+        childSupplement += WH_RATES.allInclusive.child6to11;
+      } else {
+        underSixNeedsConfirmation = true;
+      }
     }
   }
-  const r=baseRate+safariCost+childSupplement;
-  const formatted=moneyFromLKR(r);
-  document.getElementById('rate').textContent=formatted+(underSixNeedsConfirmation?'*':'');
-  let detail=formatted+' per night (package base LKR '+baseRate.toLocaleString('en-LK');
-  if(p==='Half Board') detail+='; safari tickets and jeep LKR '+safariCost.toLocaleString('en-LK');
-  else detail+='; safari and jeep included in package';
-  detail+='; child supplements LKR '+childSupplement.toLocaleString('en-LK')+')';
-  if(underSixNeedsConfirmation) detail+='; child under 6 supplement pending reservations confirmation';
-  document.getElementById('rateHidden').value=detail;
-  let note=document.getElementById('childRateNote');
-  if(!note){note=document.createElement('div');note.id='childRateNote';note.className='small';document.querySelector('.rate-box').insertAdjacentElement('afterend',note);}
-  note.textContent=underSixNeedsConfirmation?'*Estimated rate excludes any supplement for a child under 6. Please confirm with reservations.':(p==='Half Board'?'Half Board includes LKR 30,000 jeep once per booking; safari tickets are calculated by guest count. ':'Safari and jeep are included in the All Inclusive adult package rate. ')+'Final rate is confirmed by reservations.';
+
+  const r = baseRate + safariCost + childSupplement;
+  const formatted = moneyFromLKR(r);
+
+  document.getElementById('rate').textContent =
+    formatted + (underSixNeedsConfirmation ? '*' : '');
+
+  let detail = formatted + ' per night (package base LKR '
+    + baseRate.toLocaleString('en-LK');
+
+  if(p === 'Half Board'){
+    detail += '; safari tickets and jeep LKR '
+      + safariCost.toLocaleString('en-LK');
+  } else {
+    detail += '; safari and jeep included in package';
+  }
+
+  detail += '; child supplements LKR '
+    + childSupplement.toLocaleString('en-LK') + ')';
+
+  if(underSixNeedsConfirmation){
+    detail += '; child under 6 supplement pending reservations confirmation';
+  }
+
+  document.getElementById('rateHidden').value = detail;
+
+  let note = document.getElementById('childRateNote');
+
+  if(!note){
+    note = document.createElement('div');
+    note.id = 'childRateNote';
+    note.className = 'small';
+    document.querySelector('.rate-box').insertAdjacentElement('afterend', note);
+  }
+
+  note.textContent = underSixNeedsConfirmation
+    ? '*Estimated rate excludes any supplement for a child under 6. Please confirm with reservations.'
+    : (p === 'Half Board'
+      ? 'Half Board includes one LKR '
+        + WH_RATES.safari.jeep.toLocaleString('en-LK')
+        + ' jeep per booking; safari tickets are calculated by guest count. '
+      : 'Safari and jeep are included in the All Inclusive adult package rate. ')
+      + 'Final rate is confirmed by reservations.';
 }
+
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
 [pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();setCurrencyFromCountry();
 const today=new Date();const iso=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);document.getElementById('checkin').min=iso;document.getElementById('checkout').min=iso;document.getElementById('checkin').addEventListener('change',e=>{document.getElementById('checkout').min=e.target.value;if(document.getElementById('checkout').value<e.target.value)document.getElementById('checkout').value=e.target.value});
