@@ -842,7 +842,7 @@ A serene journey into the wild.
     <div class="section-head reveal">
       <div class="eyebrow">Foreign Guest Packages</div>
       <h2>Stay, dine &amp; explore the wild.</h2>
-      <p>Recommended package rates per cabin, per night. Both packages include one safari experience, the safari jeep and applicable safari tickets.</p>
+      <p>Package rates per cabin, per night. Half Board is shown with one safari included; All Inclusive rates also include one safari, the jeep and applicable tickets.</p>
       <div class="currency-picker" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px auto 8px;">
         <label for="currencySelect" style="font-weight:600;">Display prices in</label>
         <select id="currencySelect" aria-label="Choose display currency" style="padding:10px 14px;border:1px solid #b9b09f;border-radius:6px;background:#fff;color:#222;font:inherit;min-width:170px;">
@@ -854,13 +854,13 @@ A serene journey into the wild.
     <div class="rates-grid">
       <article class="rate-card reveal">
         <div class="rate-label">Half Board + Safari</div><h3>Double</h3><p>2 adults</p>
-        <div class="rate-number" data-rate-lkr="138000">LKR 138,000</div>
-        <p>Accommodation, half-board meals and one included safari experience.</p>
+        <div class="rate-number" data-rate-lkr="129000">LKR 129,000</div>
+        <p>Double occupancy: LKR 75,000 Half Board + LKR 24,000 for two adult safari tickets + LKR 30,000 jeep.</p>
       </article>
       <article class="rate-card reveal">
         <div class="rate-label">Half Board + Safari</div><h3>Triple</h3><p>3 adults</p>
-        <div class="rate-number" data-rate-lkr="155000">LKR 155,000</div>
-        <p>Accommodation, half-board meals and one included safari experience.</p>
+        <div class="rate-number" data-rate-lkr="158000">LKR 158,000</div>
+        <p>Triple occupancy: LKR 90,000 Half Board + LKR 24,000 for two adult safari tickets + LKR 14,000 for the third adult ticket + LKR 30,000 jeep.</p>
       </article>
       <article class="rate-card featured reveal">
         <div class="rate-label">All Inclusive + Safari</div><h3>Double / Triple</h3><p>2 adults / 3 adults</p>
@@ -960,7 +960,7 @@ A serene journey into the wild.
       <h2>Your wild escape starts here.</h2>
 
       <p>
-        Choose your dates and package. Half Board and All Inclusive packages both include one safari experience, the jeep and applicable safari tickets.
+        Choose your dates and package. Half Board rates are calculated from the accommodation-and-meals rate plus safari tickets and one jeep charge. All Inclusive rates include one safari.
       </p>
 
       <div class="contact-box">
@@ -1368,25 +1368,44 @@ function calc(){
   const p=pkg.value;
   const a=+adults.value;
   const c=+children.value;
-  // Published base package rates are for two adults; triple rates apply to three adults.
-  let r=(a===3)?(p==='Half Board'?155000:185000):(p==='Half Board'?138000:158000);
+  let baseRate=0;
+  let safariCost=0;
   let childSupplement=0;
   let underSixNeedsConfirmation=false;
-  for(let i=0;i<c;i++){
-    const age=+(i===0?age1.value:age2.value);
-    if(age>=12) childSupplement+=29000;
-    else if(age>=6) childSupplement+=14500;
-    else underSixNeedsConfirmation=true;
+
+  if(p==='Half Board'){
+    // HB rates exclude safari: double LKR 75,000; triple LKR 90,000.
+    baseRate=(a===3)?90000:75000;
+    // Safari tickets: first two adults together LKR 24,000; third adult LKR 14,000.
+    safariCost=(a>=2?24000:14000)+(a===3?14000:0)+30000; // one jeep per booking: LKR 30,000
+    for(let i=0;i<c;i++){
+      const age=+(i===0?age1.value:age2.value);
+      if(age>=12) childSupplement+=29000; // LKR 15,000 HB + LKR 14,000 safari ticket
+      else if(age>=6) childSupplement+=14500; // half of LKR 29,000 child supplement
+      else underSixNeedsConfirmation=true;
+    }
+  } else {
+    // Existing All Inclusive rates already include one safari and jeep.
+    baseRate=(a===3)?185000:158000;
+    for(let i=0;i<c;i++){
+      const age=+(i===0?age1.value:age2.value);
+      if(age>=12) childSupplement+=29000;
+      else if(age>=6) childSupplement+=14500;
+      else underSixNeedsConfirmation=true;
+    }
   }
-  r+=childSupplement;
+  const r=baseRate+safariCost+childSupplement;
   const formatted=moneyFromLKR(r);
   document.getElementById('rate').textContent=formatted+(underSixNeedsConfirmation?'*':'');
-  let detail=formatted+' per night (base package LKR '+((a===3)?(p==='Half Board'?155000:185000):(p==='Half Board'?138000:158000)).toLocaleString('en-LK')+'; child supplements LKR '+childSupplement.toLocaleString('en-LK')+')';
+  let detail=formatted+' per night (package base LKR '+baseRate.toLocaleString('en-LK');
+  if(p==='Half Board') detail+='; safari tickets and jeep LKR '+safariCost.toLocaleString('en-LK');
+  else detail+='; safari and jeep included in package';
+  detail+='; child supplements LKR '+childSupplement.toLocaleString('en-LK')+')';
   if(underSixNeedsConfirmation) detail+='; child under 6 supplement pending reservations confirmation';
   document.getElementById('rateHidden').value=detail;
   let note=document.getElementById('childRateNote');
   if(!note){note=document.createElement('div');note.id='childRateNote';note.className='small';document.querySelector('.rate-box').insertAdjacentElement('afterend',note);}
-  note.textContent=underSixNeedsConfirmation?'*Estimated rate excludes any supplement for a child under 6. Please confirm with reservations.':'Child supplements are included in this estimate; final rate is confirmed by reservations.';
+  note.textContent=underSixNeedsConfirmation?'*Estimated rate excludes any supplement for a child under 6. Please confirm with reservations.':(p==='Half Board'?'Half Board includes LKR 30,000 jeep once per booking; safari tickets are calculated by guest count. ':'Safari and jeep are included in the All Inclusive adult package rate. ')+'Final rate is confirmed by reservations.';
 }
 function guestUI(){let c=+children.value,a=+adults.value;if(a===3){children.value='0';c=0;children.disabled=true}else children.disabled=false;document.getElementById('age1wrap').style.display=c>=1?'flex':'none';document.getElementById('age2wrap').style.display=c>=2?'flex':'none';calc()}
 [pkg,adults,children,age1,age2].forEach(x=>x.addEventListener('change',guestUI));guestUI();setCurrencyFromCountry();
