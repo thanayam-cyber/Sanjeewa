@@ -1269,7 +1269,8 @@ function calc(){
   const a=+adults.value;
   const c=+children.value;
   const isHB=p==='Half Board';
-  const rates=isHB?{double:134000,triple:158000,child1:143000,child2:147000}:{double:158000,triple:185000,child1:175500,child2:187000};
+  const defaults=isHB?{double:134000,triple:158000,child1:143000,child2:147000}:{double:158000,triple:185000,child1:175500,child2:187000};
+  const rates=(window.wildHasthiSiteRates&&window.wildHasthiSiteRates[isHB?'halfBoard':'allInclusive'])||defaults;
   let r;
   if(a>=3) r=rates.triple;
   else if(c>=2) r=rates.child2;
@@ -1533,69 +1534,80 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
 });
 </script>
 
-<!-- WILD HASTHI GALLERY LIGHTBOX -->
+<!-- WILD HASTHI LIVE WEBSITE CONTENT: rates and gallery are managed in /admin.html -->
+<script>
+(async function loadWildHasthiManagedContent(){
+  const SITE_CONTENT_URL='https://tywiaewwuxhuncomxpjv.supabase.co';
+  const SITE_CONTENT_KEY='sb_publishable_gA7-Hd_ivLSWeQmw1xzeHQ_zERqIjQ0';
+  try{
+    const client=window.supabase.createClient(SITE_CONTENT_URL,SITE_CONTENT_KEY);
+    const {data,error}=await client.from('wild_hasthi_site_content').select('content').eq('id',1).single();
+    if(error) throw error;
+    const content=data?.content||{};
+    if(content.rates){window.wildHasthiSiteRates=content.rates;if(typeof calc==='function')calc();}
+    if(Array.isArray(content.gallery)){
+      const grid=document.querySelector('#gallery .gallery-grid');
+      if(grid){
+        grid.replaceChildren();
+        content.gallery.forEach((photo,index)=>{
+          if(!photo||!photo.src)return;
+          const item=document.createElement('div');item.className='gallery-item reveal'+(index===0?' g1':'');
+          const img=document.createElement('img');img.src=photo.src;img.alt=photo.alt||'Wild Hasthi';img.loading='lazy';
+          item.appendChild(img);grid.appendChild(item);
+        });
+      }
+    }
+  }catch(error){console.warn('Wild Hasthi managed content unavailable; using built-in website content.',error);}
+})();
+</script>
+
+<!-- WILD HASTHI GALLERY LIGHTBOX: supports photos loaded later from the Admin Panel -->
 <script>
 (function () {
-  const galleryImages = Array.from(
-    document.querySelectorAll('#gallery .gallery-item img')
-  );
-
-  if (!galleryImages.length) return;
+  const grid = document.querySelector('#gallery .gallery-grid');
+  if (!grid) return;
 
   const lightbox = document.createElement('div');
   lightbox.className = 'gallery-lightbox';
   lightbox.setAttribute('role', 'dialog');
   lightbox.setAttribute('aria-modal', 'true');
-
   lightbox.innerHTML = `
     <button class="gallery-lightbox-close" aria-label="Close photo">&times;</button>
     <button class="gallery-lightbox-prev" aria-label="Previous photo">&#8249;</button>
     <img src="" alt="Wild Hasthi gallery photo">
     <button class="gallery-lightbox-next" aria-label="Next photo">&#8250;</button>
   `;
-
   document.body.appendChild(lightbox);
 
   const image = lightbox.querySelector('img');
   let currentIndex = 0;
-
+  function getImages() { return Array.from(grid.querySelectorAll('.gallery-item img')); }
   function showPhoto(index) {
-    currentIndex = (index + galleryImages.length) % galleryImages.length;
-    image.src = galleryImages[currentIndex].currentSrc ||
-                galleryImages[currentIndex].src;
-    image.alt = galleryImages[currentIndex].alt || 'Wild Hasthi photo';
+    const images = getImages();
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    image.src = images[currentIndex].currentSrc || images[currentIndex].src;
+    image.alt = images[currentIndex].alt || 'Wild Hasthi photo';
   }
-
   function closePhoto() {
     lightbox.classList.remove('active');
     document.body.classList.remove('lightbox-open');
   }
 
-  galleryImages.forEach(function (img, index) {
-    img.addEventListener('click', function () {
-      showPhoto(index);
-      lightbox.classList.add('active');
-      document.body.classList.add('lightbox-open');
-    });
+  grid.addEventListener('click', function (event) {
+    const img = event.target.closest('.gallery-item img');
+    if (!img) return;
+    const images = getImages();
+    const index = images.indexOf(img);
+    if (index < 0) return;
+    showPhoto(index);
+    lightbox.classList.add('active');
+    document.body.classList.add('lightbox-open');
   });
-
-  lightbox.querySelector('.gallery-lightbox-close')
-    .addEventListener('click', closePhoto);
-
-  lightbox.querySelector('.gallery-lightbox-prev')
-    .addEventListener('click', function () {
-      showPhoto(currentIndex - 1);
-    });
-
-  lightbox.querySelector('.gallery-lightbox-next')
-    .addEventListener('click', function () {
-      showPhoto(currentIndex + 1);
-    });
-
-  lightbox.addEventListener('click', function (event) {
-    if (event.target === lightbox) closePhoto();
-  });
-
+  lightbox.querySelector('.gallery-lightbox-close').addEventListener('click', closePhoto);
+  lightbox.querySelector('.gallery-lightbox-prev').addEventListener('click', function () { showPhoto(currentIndex - 1); });
+  lightbox.querySelector('.gallery-lightbox-next').addEventListener('click', function () { showPhoto(currentIndex + 1); });
+  lightbox.addEventListener('click', function (event) { if (event.target === lightbox) closePhoto(); });
   document.addEventListener('keydown', function (event) {
     if (!lightbox.classList.contains('active')) return;
     if (event.key === 'Escape') closePhoto();
