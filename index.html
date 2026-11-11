@@ -932,7 +932,6 @@ A serene journey into the wild.
     <!-- BOOKING FORM -->
     <form class="form reveal"
           id="bookingForm"
-          action="https://formspree.io/f/mgaewrpe"
           method="POST">
 
       <h3>Request your stay</h3>
@@ -1389,6 +1388,11 @@ function bookingText() {
 document.getElementById('wa').addEventListener('click',()=>window.open('https://wa.me/94718912032?text='+bookingText(),'_blank'));
 const SUPABASE_URL='https://gpghedyiowenwxraklnu.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_jPdKMU6_yoXtdqkSiYAdXw_QvJryHyR';
+
+// Separate Wild Hasthi project used only for reservation email delivery.
+const WILD_HASTHI_EMAIL_FUNCTION_URL='https://tywiaewwuxhuncomxpjv.supabase.co/functions/v1/send-wildhasthi-reservation';
+const WILD_HASTHI_EMAIL_PUBLISHABLE_KEY='sb_publishable_gA7-Hd_ivLSWeQmw1xzeHQ_zERqIjQ0';
+
 const H003_PROPERTY_ID='89fbb04a-1a9f-459e-b9b0-b0321638575e';
 const availabilityClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const availabilityButton=document.querySelector('#bookingForm button[type="submit"]');
@@ -1464,24 +1468,68 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const f=e.currentTarget;
   const btn=f.querySelector('button[type=submit]');
+
+  // Keep the existing live cabin-availability check before sending any request.
   const stillAvailable=await checkWildHasthiAvailability();
   if(!stillAvailable) return;
+
+  if(!WILD_HASTHI_EMAIL_PUBLISHABLE_KEY || WILD_HASTHI_EMAIL_PUBLISHABLE_KEY==='sb_publishable_gA7-Hd_ivLSWeQmw1xzeHQ_zERqIjQ0'){
+    alert('Reservation email is not configured yet. Please contact Wild Hasthi on WhatsApp.');
+    return;
+  }
+
   btn.disabled=true;
   btn.textContent='Sending...';
+
   try{
-    const res=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}});
-    if(res.ok){
-      alert('Thank you. Your Wild Hasthi reservation request has been sent. We will contact you to confirm availability.');
-      f.reset();
-      guestUI();
-      checkWildHasthiAvailability();
-    }else throw new Error();
+    const formData=new FormData(f);
+    const childrenCount=Number(formData.get('children')||0);
+    const childAges=[];
+    if(childrenCount>=1) childAges.push(formData.get('child_age_1'));
+    if(childrenCount>=2) childAges.push(formData.get('child_age_2'));
+
+    const reservation={
+      name:formData.get('name'),
+      email:formData.get('email'),
+      phone:formData.get('phone'),
+      package:formData.get('package'),
+      game_drive:formData.get('game_drive'),
+      checkin:formData.get('checkin'),
+      checkout:formData.get('checkout'),
+      adults:formData.get('adults'),
+      children:formData.get('children'),
+      child_ages:childAges.join(', '),
+      accommodation:formData.get('accommodation'),
+      rate:formData.get('rate'),
+      special_requests:formData.get('special_requests'),
+      source:formData.get('source')
+    };
+
+    const res=await fetch(WILD_HASTHI_EMAIL_FUNCTION_URL,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':WILD_HASTHI_EMAIL_PUBLISHABLE_KEY
+      },
+      body:JSON.stringify(reservation)
+    });
+
+    const result=await res.json().catch(()=>({}));
+    if(!res.ok || !result.success){
+      console.error('Wild Hasthi reservation email error:',result);
+      throw new Error(result.error||'Email request failed');
+    }
+
+    alert('Thank you. Your Wild Hasthi reservation request has been sent. We will contact you to confirm availability.');
+    f.reset();
+    guestUI();
+    checkWildHasthiAvailability();
   }catch(err){
+    console.error('Reservation submission failed:',err);
     alert('We could not send the request right now. Please use WhatsApp to contact reservations.');
     btn.disabled=false;
     btn.textContent='Send reservation request';
   }
-
 });
 </script>
 
