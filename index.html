@@ -1473,7 +1473,7 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
   const stillAvailable=await checkWildHasthiAvailability();
   if(!stillAvailable) return;
 
-  if(!WILD_HASTHI_EMAIL_PUBLISHABLE_KEY || WILD_HASTHI_EMAIL_PUBLISHABLE_KEY==='sb_publishable_gA7-Hd_ivLSWeQmw1xzeHQ_zERqIjQ0'){
+  if(!WILD_HASTHI_EMAIL_PUBLISHABLE_KEY || WILD_HASTHI_EMAIL_PUBLISHABLE_KEY==='YOUR_SUPABASE_PUBLISHABLE_KEY'){
     alert('Reservation email is not configured yet. Please contact Wild Hasthi on WhatsApp.');
     return;
   }
