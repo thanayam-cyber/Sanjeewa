@@ -1545,6 +1545,53 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
     if(error) throw error;
     const content=data?.content||{};
     if(content.rates){window.wildHasthiSiteRates=content.rates;if(typeof calc==='function')calc();}
+    if(content.hero){
+      const hero=document.querySelector('.hero');
+      if(hero){
+        if(content.hero.src){const safeSrc=String(content.hero.src).replace(/[\"\\\n\r]/g,'');hero.style.backgroundImage='linear-gradient(90deg,rgba(7,15,11,.72),rgba(7,15,11,.18) 60%,rgba(7,15,11,.4)),url("'+safeSrc+'")';}
+        const kicker=hero.querySelector('.hero-kicker');if(kicker&&content.hero.kicker)kicker.textContent=content.hero.kicker;
+        const title=hero.querySelector('h1');if(title&&content.hero.title){title.textContent=content.hero.title;title.style.whiteSpace='pre-line';}
+        const subtitle=hero.querySelector('.hero-content p');if(subtitle&&content.hero.subtitle)subtitle.textContent=content.hero.subtitle;
+      }
+    }
+    if(Array.isArray(content.experiences)){
+      const grid=document.querySelector('#experiences .exp-grid');
+      if(grid){
+        grid.replaceChildren();
+        content.experiences.forEach((experience,index)=>{
+          if(!experience||!experience.title||!experience.description||!experience.image)return;
+          const article=document.createElement('article');article.className='exp-card reveal';
+          const img=document.createElement('img');img.src=experience.image;img.alt=experience.title;img.loading='lazy';
+          const body=document.createElement('div');body.className='exp-content';
+          const number=document.createElement('span');number.className='exp-num';number.textContent=String(index+1).padStart(2,'0');
+          const heading=document.createElement('h3');heading.textContent=experience.title;
+          const description=document.createElement('p');description.textContent=experience.description;
+          const link=document.createElement('a');link.className='exp-link';link.href='#book';link.textContent=(experience.link||'Discover more')+' →';
+          body.append(number,heading,description,link);article.append(img,body);grid.appendChild(article);
+        });
+      }
+    }
+    if(Array.isArray(content.reviews)){
+      const grid=document.querySelector('#guest-reviews .trust-grid');
+      if(grid){
+        grid.replaceChildren();
+        const approved=content.reviews.filter(review=>review&&review.approved===true&&review.comment&&review.name);
+        approved.forEach(review=>{
+          const card=document.createElement('article');card.className='trust-card';
+          const icon=document.createElement('div');icon.className='trust-icon';icon.setAttribute('aria-hidden','true');icon.textContent='✧';
+          const heading=document.createElement('h3');heading.textContent=review.title||'Guest Experience';
+          const comment=document.createElement('p');comment.textContent=review.comment;
+          const details=document.createElement('p');details.style.marginTop='18px';details.style.fontSize='.82rem';
+          const name=document.createElement('strong');name.textContent=review.name;
+          details.appendChild(name);
+          const label=review.country||'';if(label){details.appendChild(document.createElement('br'));details.appendChild(document.createTextNode(label));}
+          card.append(icon,heading);
+          const rating=Number(review.rating)||0;if(rating>0){const stars=document.createElement('p');stars.style.color='#c5a880';stars.style.letterSpacing='.12em';stars.textContent='★'.repeat(Math.min(5,Math.max(1,rating)));card.appendChild(stars);}
+          card.append(comment,details);grid.appendChild(card);
+        });
+        if(!approved.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='Guest experiences will be shared here soon.';grid.appendChild(empty);}
+      }
+    }
     if(Array.isArray(content.gallery)){
       const grid=document.querySelector('#gallery .gallery-grid');
       if(grid){
