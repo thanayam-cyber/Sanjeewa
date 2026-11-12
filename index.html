@@ -1559,6 +1559,24 @@ document.getElementById('bookingForm').addEventListener('submit',async e=>{
         });
       }
     }
+    // Load Experience cards saved from the Admin Panel.
+    if(Array.isArray(content.experiences)){
+      const grid=document.querySelector('#experiences .exp-grid');
+      if(grid){
+        grid.replaceChildren();
+        content.experiences.forEach((experience,index)=>{
+          if(!experience||!experience.title||!experience.description||!experience.image)return;
+          const article=document.createElement('article');article.className='exp-card reveal';
+          const img=document.createElement('img');img.src=experience.image;img.alt=experience.title;img.loading='lazy';
+          const body=document.createElement('div');body.className='exp-content';
+          const number=document.createElement('span');number.className='exp-num';number.textContent=String(index+1).padStart(2,'0');
+          const heading=document.createElement('h3');heading.textContent=experience.title;
+          const description=document.createElement('p');description.textContent=experience.description;
+          const link=document.createElement('a');link.className='exp-link';link.href='#book';link.textContent=(experience.link||'Discover more')+' →';
+          body.append(number,heading,description,link);article.append(img,body);grid.appendChild(article);
+        });
+      }
+    }
   }catch(error){console.warn('Wild Hasthi managed content unavailable; using built-in website content.',error);}
 })();
 </script>
